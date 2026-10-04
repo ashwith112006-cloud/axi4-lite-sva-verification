@@ -1,2 +1,7 @@
 AWVALID_DROP: injected=1440000 rule=A01_AWVALID_HOLD fail_t=1445000 latency_ns=5 scoreboard=PASS
 AWADDR_CHANGE: injected=1440000 rule=A02_AWADDR_STABLE fail_t=1445000 latency_ns=5 scoreboard=PASS
+WVALID_DROP: injected=1490000 rule=A03_WVALID_HOLD fail_t=1495000 latency_ns=5 scoreboard=PASS
+WDATA_CHANGE: injected=1490000 rule=A04_WDATA_STABLE fail_t=1495000 latency_ns=5 scoreboard=PASS
+WSTRB_CHANGE: injected=1490000 rule=A05_WSTRB_STABLE fail_t=1495000 latency_ns=5 scoreboard=PASS
+ARVALID_DROP: injected=1440000 rule=A06_ARVALID_HOLD fail_t=1445000 latency_ns=5 scoreboard=PASS
+ARADDR_CHANGE: injected=1440000 rule=A07_ARADDR_STABLE fail_t=1445000 latency_ns=5 scoreboard=PASS
