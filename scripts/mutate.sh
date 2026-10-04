@@ -31,7 +31,7 @@ verilator --binary --timing --assert -Wno-fatal -DASSERTIONS --top-module tb_top
   "$D/slave.sv" tb/master/axi4_lite_master.sv tb/monitor/axi4_lite_monitor.sv \
   tb/scoreboard/axi4_lite_scoreboard.sv \
   tb/coverage/axi4_lite_coverage.sv tb/assertions/axi4_lite_sva.sv tb/tb_top.sv 2>&1 | grep "%Error" | head -5
-timeout 120 stdbuf -o0 "$D/obj/vtb" > "$D/run.log" 2>&1
+timeout 120 stdbuf -o0 "$D/obj/vtb" $MUT_ARGS > "$D/run.log" 2>&1
 echo "=== MUTANT: $M ==="
 echo "SVA rules that fired:"
 grep -o "\[SVA_FAIL\] [A-Z0-9_]*" "$D/run.log" | sort | uniq -c | sed 's/^/  /'

@@ -1,0 +1,8 @@
+=== MUTANT: STRB_IGNORED ===
+SVA rules that fired:
+First SVA failure: none
+  [TEST] EXTRA TESTS: 13 passed, 8 failed
+  SCOREBOARD RESULT: FAIL
+=== MUTANT: ADDR_ALIAS ===
+SVA rules that fired:
+First SVA failure: none

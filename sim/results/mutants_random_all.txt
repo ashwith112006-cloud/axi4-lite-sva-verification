@@ -1,0 +1,47 @@
+=== MUTANT: MISSING_B ===
+SVA rules that fired:
+        1 [SVA_FAIL] A18_B_TIMEOUT
+First SVA failure: [SVA_FAIL] A18_B_TIMEOUT at time 255000
+  [TB] WATCHDOG TIMEOUT: simulation did not finish
+  SCOREBOARD RESULT: FAIL
+=== MUTANT: MISSING_R ===
+SVA rules that fired:
+        1 [SVA_FAIL] A19_R_TIMEOUT
+First SVA failure: [SVA_FAIL] A19_R_TIMEOUT at time 295000
+  [TB] WATCHDOG TIMEOUT: simulation did not finish
+  SCOREBOARD RESULT: FAIL
+=== MUTANT: BVALID_DROP ===
+SVA rules that fired:
+        1 [SVA_FAIL] A08_BVALID_HOLD
+        1 [SVA_FAIL] A18_B_TIMEOUT
+First SVA failure: [SVA_FAIL] A08_BVALID_HOLD at time 1145000
+  [TB] WATCHDOG TIMEOUT: simulation did not finish
+  SCOREBOARD RESULT: FAIL
+=== MUTANT: RDATA_UNSTABLE ===
+SVA rules that fired:
+       83 [SVA_FAIL] A11_RDATA_STABLE
+First SVA failure: [SVA_FAIL] A11_RDATA_STABLE at time 1195000
+  [TEST] EXTRA TESTS: 20 passed, 1 failed
+  SCOREBOARD RESULT: FAIL
+=== MUTANT: ILLEGAL_BRESP ===
+SVA rules that fired:
+       74 [SVA_FAIL] A13_BRESP_LEGAL
+First SVA failure: [SVA_FAIL] A13_BRESP_LEGAL at time 95000
+  [TEST] EXTRA TESTS: 18 passed, 3 failed
+  SCOREBOARD RESULT: FAIL
+=== MUTANT: ILLEGAL_RRESP ===
+SVA rules that fired:
+       99 [SVA_FAIL] A14_RRESP_LEGAL
+First SVA failure: [SVA_FAIL] A14_RRESP_LEGAL at time 125000
+  [TEST] EXTRA TESTS: 21 passed, 0 failed
+  SCOREBOARD RESULT: FAIL
+=== MUTANT: STRB_IGNORED ===
+SVA rules that fired:
+First SVA failure: none
+  [TEST] EXTRA TESTS: 13 passed, 8 failed
+  SCOREBOARD RESULT: FAIL
+=== MUTANT: ADDR_ALIAS ===
+SVA rules that fired:
+First SVA failure: none
+  [TEST] EXTRA TESTS: 11 passed, 10 failed
+  SCOREBOARD RESULT: FAIL
