@@ -301,6 +301,18 @@ module tb_top;
     // TEST VARIABLE
    
 
+        // ---- extra test bookkeeping ----
+    integer ext_pass = 0;
+    integer ext_fail = 0;
+`define CHK(EXP, ACT, NAME) \
+    if ((ACT) === (EXP)) begin \
+        $display("[TEST] %s PASS", NAME); \
+        ext_pass = ext_pass + 1; \
+    end else begin \
+        $display("[TEST] %s FAIL EXPECTED=%h ACTUAL=%h", NAME, (EXP), (ACT)); \
+        ext_fail = ext_fail + 1; \
+    end
+
     logic [DATA_WIDTH-1:0] read_data;
 
 
@@ -429,6 +441,47 @@ module tb_top;
                 read_data
             );
 
+
+                // ==========================================
+        // EXTRA TESTS: coverage closure plus checks
+        // ==========================================
+        master.write(32'h0000_0000, 32'hFFFF_FFFF, 4'b1111);
+        master.write(32'h0000_0000, 32'h1122_3344, 4'b0001);
+        master.read (32'h0000_0000, read_data);
+        `CHK(32'hFFFF_FF44, read_data, "WSTRB 0001")
+
+        master.write(32'h0000_0000, 32'h1122_3344, 4'b0010);
+        master.read (32'h0000_0000, read_data);
+        `CHK(32'hFFFF_3344, read_data, "WSTRB 0010")
+
+        master.write(32'h0000_0000, 32'h1122_3344, 4'b0100);
+        master.read (32'h0000_0000, read_data);
+        `CHK(32'hFF22_3344, read_data, "WSTRB 0100")
+
+        master.write(32'h0000_0000, 32'h1122_3344, 4'b1000);
+        master.read (32'h0000_0000, read_data);
+        `CHK(32'h1122_3344, read_data, "WSTRB 1000")
+
+        master.write(32'h0000_0000, 32'hAABB_CCDD, 4'b0101);
+        master.read (32'h0000_0000, read_data);
+        `CHK(32'h11BB_33DD, read_data, "WSTRB 0101 partial")
+
+        master.write(32'h0000_0000, 32'h0000_0000, 4'b0000);
+        master.read (32'h0000_0000, read_data);
+        `CHK(32'h11BB_33DD, read_data, "WSTRB 0000 no change")
+
+        master.write(32'h1000_0000, 32'hDEAD_BEEF, 4'b1111);
+        master.read (32'h0000_0000, read_data);
+        `CHK(32'h11BB_33DD, read_data, "INVALID WRITE 10000000")
+
+        master.write(32'h0000_0040, 32'hDEAD_BEEF, 4'b1111);
+        master.read (32'h0000_0000, read_data);
+        `CHK(32'h11BB_33DD, read_data, "INVALID WRITE 00000040")
+
+        master.read (32'h1000_0000, read_data);
+        `CHK(32'h0000_0000, read_data, "INVALID READ data zero")
+
+        $display("[TEST] EXTRA TESTS: %0d passed, %0d failed", ext_pass, ext_fail);
 
         // END TEST
       

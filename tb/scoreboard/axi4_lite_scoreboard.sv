@@ -121,7 +121,7 @@ module axi4_lite_scoreboard #(
 
             if (aw_received && w_received) begin
 
-                case (expected_awaddr[5:2])
+                case (expected_awaddr[31:4] == 28'd0 ? expected_awaddr[5:2] : 4'hF)
 
                     4'd0: begin
 
@@ -263,7 +263,7 @@ module axi4_lite_scoreboard #(
 
             if (rvalid && rready) begin
 
-                case (araddr[5:2])
+                case (araddr[31:4] == 28'd0 ? araddr[5:2] : 4'hF)
 
                     4'd0: begin
 
