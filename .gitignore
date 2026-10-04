@@ -1,3 +1,4 @@
 sim/*.out
 sim/waves/*.vcd
 sim/logs/
+sim/vl_obj/

@@ -38,40 +38,58 @@ module axi4_lite_master #(
         rready  = 1'b0;
     end
 
+    // Rule used in every channel below:
+    //  - drive signals right after a rising clock edge
+    //  - look at the other side's READY/VALID in the MIDDLE of the cycle
+    //    (falling edge), when nothing is changing
+    //  - if it was high, the handshake happens on the next rising edge
+
     task automatic write(
         input logic [ADDR_WIDTH-1:0]   addr,
         input logic [DATA_WIDTH-1:0]   data,
         input logic [DATA_WIDTH/8-1:0] strb
     );
+        logic       seen;
+        logic [1:0] resp_seen;
         begin
             // Write address channel
             @(posedge aclk);
             awaddr  <= addr;
             awvalid <= 1'b1;
-            @(posedge aclk);              // first edge with VALID visible
-            while (!awready)
+            seen = 1'b0;
+            while (!seen) begin
+                @(negedge aclk);
+                seen = awready;
                 @(posedge aclk);
+            end
             awvalid <= 1'b0;
 
             // Write data channel
             wdata  <= data;
             wstrb  <= strb;
             wvalid <= 1'b1;
-            @(posedge aclk);
-            while (!wready)
+            seen = 1'b0;
+            while (!seen) begin
+                @(negedge aclk);
+                seen = wready;
                 @(posedge aclk);
+            end
             wvalid <= 1'b0;
 
             // Write response channel
             bready <= 1'b1;
-            @(posedge aclk);
-            while (!bvalid)
+            seen = 1'b0;
+            while (!seen) begin
+                @(negedge aclk);
+                seen = bvalid;
+                resp_seen = bresp;
                 @(posedge aclk);
-            last_bresp = bresp;
-            if (bresp == 2'b00)
+            end
+            last_bresp = resp_seen;
+            if (resp_seen == 2'b00)
                 $display("[MASTER] WRITE SUCCESS ADDR=%h DATA=%h", addr, data);
             else
-                $display("[MASTER] WRITE RESPONSE ERROR ADDR=%h BRESP=%b", addr, bresp);
+                $display("[MASTER] WRITE RESPONSE ERROR ADDR=%h BRESP=%b", addr, resp_seen);
             bready <= 1'b0;
         end
     endtask
@@ -80,27 +98,38 @@ module axi4_lite_master #(
         input  logic [ADDR_WIDTH-1:0] addr,
         output logic [DATA_WIDTH-1:0] data
     );
+        logic                  seen;
+        logic [1:0]            resp_seen;
+        logic [DATA_WIDTH-1:0] data_seen;
         begin
             // Read address channel
             @(posedge aclk);
             araddr  <= addr;
             arvalid <= 1'b1;
-            @(posedge aclk);              // first edge with VALID visible
-            while (!arready)
+            seen = 1'b0;
+            while (!seen) begin
+                @(negedge aclk);
+                seen = arready;
                 @(posedge aclk);
+            end
             arvalid <= 1'b0;
 
             // Read data channel
             rready <= 1'b1;
-            @(posedge aclk);
-            while (!rvalid)
+            seen = 1'b0;
+            while (!seen) begin
+                @(negedge aclk);
+                seen = rvalid;
+                data_seen = rdata;
+                resp_seen = rresp;
                 @(posedge aclk);
-            data = rdata;
-            last_rresp = rresp;
-            if (rresp == 2'b00)
+            end
+            data = data_seen;
+            last_rresp = resp_seen;
+            if (resp_seen == 2'b00)
                 $display("[MASTER] READ SUCCESS ADDR=%h DATA=%h", addr, data);
             else
-                $display("[MASTER] READ RESPONSE ERROR ADDR=%h RRESP=%b", addr, rresp);
+                $display("[MASTER] READ RESPONSE ERROR ADDR=%h RRESP=%b", addr, resp_seen);
             rready <= 1'b0;
         end
     endtask
