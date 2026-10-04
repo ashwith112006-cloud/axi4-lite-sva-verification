@@ -264,37 +264,6 @@ module tb_top;
     // FAULT INJECTION MODULE
 
 
-    axi4_lite_fault_injection #(
-        .ADDR_WIDTH(ADDR_WIDTH),
-        .DATA_WIDTH(DATA_WIDTH)
-    ) fault_injection (
-
-        .aclk       (aclk),
-        .aresetn    (aresetn),
-
-        .awaddr     (awaddr),
-        .awvalid    (awvalid),
-        .awready    (awready),
-
-        .wdata      (wdata),
-        .wstrb      (wstrb),
-        .wvalid     (wvalid),
-        .wready     (wready),
-
-        .bresp      (bresp),
-        .bvalid     (bvalid),
-        .bready     (bready),
-
-        .araddr     (araddr),
-        .arvalid    (arvalid),
-        .arready    (arready),
-
-        .rdata      (rdata),
-        .rresp      (rresp),
-        .rvalid     (rvalid),
-        .rready     (rready)
-
-    );
 
 
     

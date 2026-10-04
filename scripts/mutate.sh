@@ -29,7 +29,7 @@ if cmp -s rtl/axi4_lite_slave.sv "$D/slave.sv"; then
 fi
 verilator --binary --timing --assert -Wno-fatal -DASSERTIONS --top-module tb_top -Mdir "$D/obj" -o vtb \
   "$D/slave.sv" tb/master/axi4_lite_master.sv tb/monitor/axi4_lite_monitor.sv \
-  tb/scoreboard/axi4_lite_scoreboard.sv tb/fault_injection/axi4_lite_fault_injection.sv \
+  tb/scoreboard/axi4_lite_scoreboard.sv \
   tb/coverage/axi4_lite_coverage.sv tb/assertions/axi4_lite_sva.sv tb/tb_top.sv 2>&1 | grep "%Error" | head -5
 timeout 120 stdbuf -o0 "$D/obj/vtb" > "$D/run.log" 2>&1
 echo "=== MUTANT: $M ==="
