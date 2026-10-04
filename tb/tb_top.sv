@@ -281,6 +281,18 @@ module tb_top;
     logic [31:0] rnd_addr;
     logic [31:0] rnd_data;
     logic [3:0]  rnd_strb;
+ // Simple xorshift32 random generator (same result in every simulator)
+    reg [31:0] rng;
+    function automatic [31:0] xorshift(input [31:0] s);
+        reg [31:0] x;
+        begin
+            x = s;
+            x = x ^ (x << 13);
+            x = x ^ (x >> 17);
+            x = x ^ (x << 5);
+            xorshift = x;
+        end
+    endfunction
 `define CHK(EXP, ACT, NAME) \
     if ((ACT) === (EXP)) begin \
         $display("[TEST] %s PASS", NAME); \
@@ -497,14 +509,17 @@ module tb_top;
         `CHK(2'b10, master.last_rresp, "UNALIGNED READ 0x2 RRESP=SLVERR")
         `CHK(32'h0000_0000, read_data, "UNALIGNED READ data zero")
 
- // --- constrained-random traffic (run with +SEED=n +RANDN=count)
+
+// --- constrained-random traffic (run with +SEED=n +RANDN=count)
         if (!$value$plusargs("SEED=%d", rseed)) rseed = 1;
         if (!$value$plusargs("RANDN=%d", rnd_cnt)) rnd_cnt = 0;
+        rng = rseed ^ 32'hA5A5_1234;
+        for (rnd_n = 0; rnd_n < 8; rnd_n = rnd_n + 1) rng = xorshift(rng);
         for (rnd_n = 0; rnd_n < rnd_cnt; rnd_n = rnd_n + 1) begin
-            dut.ready_delay = $random(rseed) & 3;
-            master.b_delay  = $random(rseed) & 3;
-            master.r_delay  = $random(rseed) & 3;
-            rnd_sel = $random(rseed) & 7;
+            rng = xorshift(rng); dut.ready_delay = rng[17:16];
+            rng = xorshift(rng); master.b_delay  = rng[17:16];
+            rng = xorshift(rng); master.r_delay  = rng[17:16];
+            rng = xorshift(rng); rnd_sel = rng[18:16];
             case (rnd_sel)
                 0: rnd_addr = 32'h0000_0000;
                 1: rnd_addr = 32'h0000_0004;
@@ -513,12 +528,13 @@ module tb_top;
                 4: rnd_addr = 32'h0000_0010;
                 5: rnd_addr = 32'h0000_0001;
                 6: rnd_addr = 32'h1000_0004;
-                default: rnd_addr = 32'h0000_0008;
+                default: rnd_addr = 32'h0000_0040;
             endcase
-            rnd_data = $random(rseed);
-            rnd_strb = $random(rseed);
-            if ($random(rseed) & 1) master.write(rnd_addr, rnd_data, rnd_strb);
-            else                    master.read (rnd_addr, read_data);
+            rng = xorshift(rng); rnd_data = rng;
+            rng = xorshift(rng); rnd_strb = rng[19:16];
+            rng = xorshift(rng);
+            if (rng[16]) master.write(rnd_addr, rnd_data, rnd_strb);
+            else         master.read (rnd_addr, read_data);
         end
         dut.ready_delay = 0; master.b_delay = 0; master.r_delay = 0;
 
