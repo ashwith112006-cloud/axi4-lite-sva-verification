@@ -4,363 +4,167 @@ module axi4_lite_scoreboard #(
 )(
     input logic                     aclk,
     input logic                     aresetn,
-
-    // Write Address
     input logic [ADDR_WIDTH-1:0]    awaddr,
     input logic                     awvalid,
     input logic                     awready,
-
-    // Write Data
     input logic [DATA_WIDTH-1:0]    wdata,
     input logic [DATA_WIDTH/8-1:0]  wstrb,
     input logic                     wvalid,
     input logic                     wready,
-
-    // Write Response
     input logic [1:0]               bresp,
     input logic                     bvalid,
     input logic                     bready,
-
-    // Read Address
     input logic [ADDR_WIDTH-1:0]    araddr,
     input logic                     arvalid,
     input logic                     arready,
-
-    // Read Data
     input logic [DATA_WIDTH-1:0]    rdata,
     input logic [1:0]               rresp,
     input logic                     rvalid,
     input logic                     rready
 );
+    localparam [1:0] RESP_OKAY   = 2'b00;
+    localparam [1:0] RESP_SLVERR = 2'b10;
 
-    // REFERENCE REGISTER MODEL
-   
+    // Reference model: 4 registers
+    logic [DATA_WIDTH-1:0] ref_reg [0:3];
 
-    logic [DATA_WIDTH-1:0] expected_reg0;
-    logic [DATA_WIDTH-1:0] expected_reg1;
-    logic [DATA_WIDTH-1:0] expected_reg2;
-    logic [DATA_WIDTH-1:0] expected_reg3;
+    // Captured write (AW and W can arrive separately)
+    logic [ADDR_WIDTH-1:0]   cap_awaddr;
+    logic [DATA_WIDTH-1:0]   cap_wdata;
+    logic [DATA_WIDTH/8-1:0] cap_wstrb;
+    logic aw_got;
+    logic w_got;
 
+    // Expected results for the transaction in flight
+    logic [1:0]            exp_bresp;
+    logic                  bresp_pending;
+    logic [ADDR_WIDTH-1:0] rd_addr;
+    logic [DATA_WIDTH-1:0] exp_rdata;
+    logic [1:0]            exp_rresp;
+    logic                  rd_pending;
 
-    // CAPTURED WRITE INFORMATION
-    // AXI AW and W can arrive independently
-    
+    integer checks = 0;
+    integer errors = 0;
+    integer wi, ri, bb;
+    logic [DATA_WIDTH-1:0] tmp;
 
-    logic [ADDR_WIDTH-1:0]   expected_awaddr;
-    logic [DATA_WIDTH-1:0]   expected_wdata;
-    logic [DATA_WIDTH/8-1:0] expected_wstrb;
-
-    logic aw_received;
-    logic w_received;
-
-
-    
-    // SCOREBOARD
-  
+    // Address map from the spec: four word registers at 0x0, 0x4, 0x8, 0xC.
+    // Returns -1 for any other address.
+    function automatic integer idx_of(input logic [ADDR_WIDTH-1:0] a);
+        case (a)
+            32'h0000_0000: idx_of = 0;
+            32'h0000_0004: idx_of = 1;
+            32'h0000_0008: idx_of = 2;
+            32'h0000_000C: idx_of = 3;
+            default:       idx_of = -1;
+        endcase
+    endfunction
 
     always @(posedge aclk) begin
-
         if (!aresetn) begin
-
-            expected_reg0 = '0;
-            expected_reg1 = '0;
-            expected_reg2 = '0;
-            expected_reg3 = '0;
-
-            expected_awaddr = '0;
-            expected_wdata  = '0;
-            expected_wstrb  = '0;
-
-            aw_received = 1'b0;
-            w_received  = 1'b0;
-
+            for (bb = 0; bb < 4; bb = bb + 1)
+                ref_reg[bb] = '0;
+            aw_got = 1'b0;
+            w_got = 1'b0;
+            bresp_pending = 1'b0;
+            rd_pending = 1'b0;
         end
-
         else begin
-
-            
-            // Capture WRITE ADDRESS
-          
-
+            // Capture write address and write data handshakes
             if (awvalid && awready) begin
-
-                expected_awaddr = awaddr;
-                aw_received = 1'b1;
-
-                $display(
-                    "[SCOREBOARD] AW CAPTURED: ADDR=%h",
-                    awaddr
-                );
-
+                cap_awaddr = awaddr;
+                aw_got = 1'b1;
             end
-
-
-           
-            // Capture WRITE DATA
-         
-
             if (wvalid && wready) begin
-
-                expected_wdata = wdata;
-                expected_wstrb = wstrb;
-                w_received = 1'b1;
-
-                $display(
-                    "[SCOREBOARD] W CAPTURED: DATA=%h WSTRB=%b",
-                    wdata,
-                    wstrb
-                );
-
+                cap_wdata = wdata;
+                cap_wstrb = wstrb;
+                w_got = 1'b1;
             end
 
-
-          
-            // UPDATE REFERENCE MODEL
-            // When both AW and W have arrived
-        
-
-            if (aw_received && w_received) begin
-
-                case (expected_awaddr[31:4] == 28'd0 ? expected_awaddr[5:2] : 4'hF)
-
-                    4'd0: begin
-
-                        if (expected_wstrb[0])
-                            expected_reg0[7:0] =
-                                expected_wdata[7:0];
-
-                        if (expected_wstrb[1])
-                            expected_reg0[15:8] =
-                                expected_wdata[15:8];
-
-                        if (expected_wstrb[2])
-                            expected_reg0[23:16] =
-                                expected_wdata[23:16];
-
-                        if (expected_wstrb[3])
-                            expected_reg0[31:24] =
-                                expected_wdata[31:24];
-
-                    end
-
-
-                    4'd1: begin
-
-                        if (expected_wstrb[0])
-                            expected_reg1[7:0] =
-                                expected_wdata[7:0];
-
-                        if (expected_wstrb[1])
-                            expected_reg1[15:8] =
-                                expected_wdata[15:8];
-
-                        if (expected_wstrb[2])
-                            expected_reg1[23:16] =
-                                expected_wdata[23:16];
-
-                        if (expected_wstrb[3])
-                            expected_reg1[31:24] =
-                                expected_wdata[31:24];
-
-                    end
-
-
-                    4'd2: begin
-
-                        if (expected_wstrb[0])
-                            expected_reg2[7:0] =
-                                expected_wdata[7:0];
-
-                        if (expected_wstrb[1])
-                            expected_reg2[15:8] =
-                                expected_wdata[15:8];
-
-                        if (expected_wstrb[2])
-                            expected_reg2[23:16] =
-                                expected_wdata[23:16];
-
-                        if (expected_wstrb[3])
-                            expected_reg2[31:24] =
-                                expected_wdata[31:24];
-
-                    end
-
-
-                    4'd3: begin
-
-                        if (expected_wstrb[0])
-                            expected_reg3[7:0] =
-                                expected_wdata[7:0];
-
-                        if (expected_wstrb[1])
-                            expected_reg3[15:8] =
-                                expected_wdata[15:8];
-
-                        if (expected_wstrb[2])
-                            expected_reg3[23:16] =
-                                expected_wdata[23:16];
-
-                        if (expected_wstrb[3])
-                            expected_reg3[31:24] =
-                                expected_wdata[31:24];
-
-                    end
-
-
-                    default: begin
-
-                        // Invalid address.
-                        // Reference registers are unchanged.
-
-                    end
-
-                endcase
-
-
-                // Clear captured write
-                aw_received = 1'b0;
-                w_received  = 1'b0;
-
-            end
-
-
-            // CHECK WRITE RESPONSE
-            
-
-            if (bvalid && bready) begin
-
-                if (bresp == 2'b00) begin
-
-                    $display(
-                        "[SCOREBOARD] WRITE RESPONSE PASS: BRESP=OKAY"
-                    );
-
+            // When both have arrived, update the model and the expected response
+            if (aw_got && w_got) begin
+                wi = idx_of(cap_awaddr);
+                if (wi >= 0) begin
+                    tmp = ref_reg[wi];
+                    for (bb = 0; bb < 4; bb = bb + 1)
+                        if (cap_wstrb[bb])
+                            tmp[8*bb +: 8] = cap_wdata[8*bb +: 8];
+                    ref_reg[wi] = tmp;
+                    exp_bresp = RESP_OKAY;
                 end
-
-                else if (bresp == 2'b10) begin
-
-                    $display(
-                        "[SCOREBOARD] WRITE RESPONSE: SLVERR"
-                    );
-
-                end
-
                 else begin
-
-                    $error(
-                        "[SCOREBOARD] INVALID BRESP=%b",
-                        bresp
-                    );
-
+                    exp_bresp = RESP_SLVERR;
                 end
-
+                bresp_pending = 1'b1;
+                aw_got = 1'b0;
+                w_got = 1'b0;
             end
 
+            // Check the write response
+            if (bvalid && bready) begin
+                checks = checks + 1;
+                if (!bresp_pending) begin
+                    errors = errors + 1;
+                    $display("[SCOREBOARD] ERROR: B handshake with no write pending");
+                end
+                else begin
+                    if (bresp === exp_bresp)
+                        $display("[SCOREBOARD] WRITE RESPONSE PASS: BRESP=%b", bresp);
+                    else begin
+                        errors = errors + 1;
+                        $display("[SCOREBOARD] WRITE RESPONSE FAIL: EXPECTED=%b GOT=%b",
+                                 exp_bresp, bresp);
+                    end
+                    bresp_pending = 1'b0;
+                end
+            end
 
-           
-            // CHECK READ RESPONSE
-          
+            // Capture the read request and work out what the answer should be
+            if (arvalid && arready) begin
+                rd_addr = araddr;
+                ri = idx_of(araddr);
+                if (ri >= 0) begin
+                    exp_rdata = ref_reg[ri];
+                    exp_rresp = RESP_OKAY;
+                end
+                else begin
+                    exp_rdata = '0;
+                    exp_rresp = RESP_SLVERR;
+                end
+                rd_pending = 1'b1;
+            end
 
+            // Check the read response
             if (rvalid && rready) begin
-
-                case (araddr[31:4] == 28'd0 ? araddr[5:2] : 4'hF)
-
-                    4'd0: begin
-
-                        if (rdata === expected_reg0)
-                            $display(
-                                "[SCOREBOARD] READ PASS: ADDR=%h DATA=%h",
-                                araddr,
-                                rdata
-                            );
-                        else
-                            $error(
-                                "[SCOREBOARD] READ FAIL: ADDR=%h EXPECTED=%h ACTUAL=%h",
-                                araddr,
-                                expected_reg0,
-                                rdata
-                            );
-
+                checks = checks + 1;
+                if (!rd_pending) begin
+                    errors = errors + 1;
+                    $display("[SCOREBOARD] ERROR: R handshake with no read pending");
+                end
+                else begin
+                    if (rdata === exp_rdata && rresp === exp_rresp)
+                        $display("[SCOREBOARD] READ PASS: ADDR=%h DATA=%h RRESP=%b",
+                                 rd_addr, rdata, rresp);
+                    else begin
+                        errors = errors + 1;
+                        $display("[SCOREBOARD] READ FAIL: ADDR=%h EXP_DATA=%h EXP_RRESP=%b GOT_DATA=%h GOT_RRESP=%b",
+                                 rd_addr, exp_rdata, exp_rresp, rdata, rresp);
                     end
-
-
-                    4'd1: begin
-
-                        if (rdata === expected_reg1)
-                            $display(
-                                "[SCOREBOARD] READ PASS: ADDR=%h DATA=%h",
-                                araddr,
-                                rdata
-                            );
-                        else
-                            $error(
-                                "[SCOREBOARD] READ FAIL: ADDR=%h EXPECTED=%h ACTUAL=%h",
-                                araddr,
-                                expected_reg1,
-                                rdata
-                            );
-
-                    end
-
-
-                    4'd2: begin
-
-                        if (rdata === expected_reg2)
-                            $display(
-                                "[SCOREBOARD] READ PASS: ADDR=%h DATA=%h",
-                                araddr,
-                                rdata
-                            );
-                        else
-                            $error(
-                                "[SCOREBOARD] READ FAIL: ADDR=%h EXPECTED=%h ACTUAL=%h",
-                                araddr,
-                                expected_reg2,
-                                rdata
-                            );
-
-                    end
-
-
-                    4'd3: begin
-
-                        if (rdata === expected_reg3)
-                            $display(
-                                "[SCOREBOARD] READ PASS: ADDR=%h DATA=%h",
-                                araddr,
-                                rdata
-                            );
-                        else
-                            $error(
-                                "[SCOREBOARD] READ FAIL: ADDR=%h EXPECTED=%h ACTUAL=%h",
-                                araddr,
-                                expected_reg3,
-                                rdata
-                            );
-
-                    end
-
-
-                    default: begin
-
-                        if (rdata === '0)
-                            $display(
-                                "[SCOREBOARD] INVALID READ PASS: DATA=0"
-                            );
-                        else
-                            $error(
-                                "[SCOREBOARD] INVALID READ FAIL: DATA=%h",
-                                rdata
-                            );
-
-                    end
-
-                endcase
-
+                    rd_pending = 1'b0;
+                end
             end
-
         end
-
     end
 
+    final begin
+        $display("");
+        $display("==============================================");
+        $display("            SCOREBOARD SUMMARY");
+        $display("==============================================");
+        $display("CHECKS = %0d  ERRORS = %0d", checks, errors);
+        if (errors == 0 && checks > 0)
+            $display("SCOREBOARD RESULT: PASS");
+        else
+            $display("SCOREBOARD RESULT: FAIL");
+    end
 endmodule
