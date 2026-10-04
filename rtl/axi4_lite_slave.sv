@@ -70,17 +70,25 @@ module axi4_lite_slave #(
 
     logic aw_received;
     logic w_received;
+// Simulation-only knob: holds READY low for N cycles after VALID (creates stalls)
+    integer ready_delay = 0;
+    integer aw_wait = 0, w_wait = 0, ar_wait = 0;
+    always @(posedge aclk) begin
+        aw_wait <= (s_axi_awvalid && !s_axi_awready) ? aw_wait + 1 : 0;
+        w_wait  <= (s_axi_wvalid  && !s_axi_wready ) ? w_wait  + 1 : 0;
+        ar_wait <= (s_axi_arvalid && !s_axi_arready) ? ar_wait + 1 : 0;
+    end
 
     // Write Address Ready
     // Accept address only when previous address
     // has already been consumed.
   
 
-    assign s_axi_awready = !aw_received && !s_axi_bvalid;
+    assign s_axi_awready = !aw_received && !s_axi_bvalid && (aw_wait >= ready_delay);
 
     // Write Data Ready
     
-    assign s_axi_wready = !w_received && !s_axi_bvalid;
+    assign s_axi_wready = !w_received && !s_axi_bvalid && (w_wait >= ready_delay);
 
     
     // Read Address Ready
@@ -88,7 +96,7 @@ module axi4_lite_slave #(
     // response has been consumed.
    
 
-    assign s_axi_arready = !s_axi_rvalid;
+    assign s_axi_arready = !s_axi_rvalid && (ar_wait >= ready_delay);
 
     
     // Sequential Logic

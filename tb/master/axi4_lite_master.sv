@@ -27,6 +27,7 @@ module axi4_lite_master #(
     logic [1:0] last_rresp = 2'b00;
     integer b_delay = 0;
     integer r_delay = 0;
+    integer fault_mode = 0;
 
     initial begin
         awaddr  = '0;
@@ -64,6 +65,18 @@ module axi4_lite_master #(
             while (!seen) begin
                 @(negedge aclk);
                 seen = awready;
+  if (!seen && fault_mode == 1) begin
+                    $display("[FAULT_INJECTED] mode=1 at time %0t", $time);
+                    fault_mode = 0; awvalid = 1'b0;
+                    @(posedge aclk); @(negedge aclk);
+                    awvalid = 1'b1; seen = awready;
+                end
+                if (!seen && fault_mode == 2) begin
+                    $display("[FAULT_INJECTED] mode=2 at time %0t", $time);
+                    fault_mode = 0; awaddr = awaddr ^ 32'h0000_0010;
+                    @(posedge aclk); @(negedge aclk);
+                    awaddr = addr; seen = awready;
+                end
                 @(posedge aclk);
             end
             @(negedge aclk);
@@ -78,6 +91,24 @@ module axi4_lite_master #(
             while (!seen) begin
                 @(negedge aclk);
                 seen = wready;
+ if (!seen && fault_mode == 3) begin
+                    $display("[FAULT_INJECTED] mode=3 at time %0t", $time);
+                    fault_mode = 0; wvalid = 1'b0;
+                    @(posedge aclk); @(negedge aclk);
+                    wvalid = 1'b1; seen = wready;
+                end
+                if (!seen && fault_mode == 4) begin
+                    $display("[FAULT_INJECTED] mode=4 at time %0t", $time);
+                    fault_mode = 0; wdata = ~wdata;
+                    @(posedge aclk); @(negedge aclk);
+                    wdata = data; seen = wready;
+                end
+                if (!seen && fault_mode == 5) begin
+                    $display("[FAULT_INJECTED] mode=5 at time %0t", $time);
+                    fault_mode = 0; wstrb = ~wstrb;
+                    @(posedge aclk); @(negedge aclk);
+                    wstrb = strb; seen = wready;
+                end
                 @(posedge aclk);
             end
             @(negedge aclk);
@@ -122,6 +153,18 @@ module axi4_lite_master #(
             while (!seen) begin
                 @(negedge aclk);
                 seen = arready;
+if (!seen && fault_mode == 6) begin
+                    $display("[FAULT_INJECTED] mode=6 at time %0t", $time);
+                    fault_mode = 0; arvalid = 1'b0;
+                    @(posedge aclk); @(negedge aclk);
+                    arvalid = 1'b1; seen = arready;
+                end
+                if (!seen && fault_mode == 7) begin
+                    $display("[FAULT_INJECTED] mode=7 at time %0t", $time);
+                    fault_mode = 0; araddr = araddr ^ 32'h0000_0010;
+                    @(posedge aclk); @(negedge aclk);
+                    araddr = addr; seen = arready;
+                end
                 @(posedge aclk);
             end
             @(negedge aclk);

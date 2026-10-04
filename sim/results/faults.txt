@@ -1,0 +1,2 @@
+AWVALID_DROP: injected=1440000 rule=A01_AWVALID_HOLD fail_t=1445000 latency_ns=5 scoreboard=PASS
+AWADDR_CHANGE: injected=1440000 rule=A02_AWADDR_STABLE fail_t=1445000 latency_ns=5 scoreboard=PASS

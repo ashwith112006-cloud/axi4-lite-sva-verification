@@ -304,6 +304,7 @@ module tb_top;
         // ---- extra test bookkeeping ----
     integer ext_pass = 0;
     integer ext_fail = 0;
+    integer fault_sel = 0;
 `define CHK(EXP, ACT, NAME) \
     if ((ACT) === (EXP)) begin \
         $display("[TEST] %s PASS", NAME); \
@@ -494,6 +495,22 @@ module tb_top;
         `CHK(32'hA5A5_5A5A, read_data, "BACKPRESSURE READ DATA")
         master.b_delay = 0;
         master.r_delay = 0;
+
+ // --- stall test: slave holds READY low for 4 cycles (exercises A01-A07)
+        if (!$value$plusargs("FAULT=%d", fault_sel)) fault_sel = 0;
+        dut.ready_delay = 4;
+        master.write(32'h0000_0008, 32'h5555_AAAA, 4'b1111);
+        `CHK(2'b00, master.last_bresp, "STALL WRITE BRESP=OKAY")
+        master.read (32'h0000_0008, read_data);
+        `CHK(32'h5555_AAAA, read_data, "STALL READ DATA")
+        // --- optional injected fault (only when run with +FAULT=n)
+        if (fault_sel != 0) begin
+            master.fault_mode = fault_sel;
+            if (fault_sel <= 5) master.write(32'h0000_000C, 32'h1234_ABCD, 4'b1111);
+            else                master.read (32'h0000_000C, read_data);
+            master.fault_mode = 0;
+        end
+        dut.ready_delay = 0;
 
         $display("[TEST] EXTRA TESTS: %0d passed, %0d failed", ext_pass, ext_fail);
 
