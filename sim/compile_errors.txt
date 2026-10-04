@@ -1,0 +1,106 @@
+tb/master/axi4_lite_master.sv:5: syntax error
+tb/master/axi4_lite_master.sv:5: Errors in port declarations.
+tb/monitor/axi4_lite_monitor.sv:5: syntax error
+tb/monitor/axi4_lite_monitor.sv:5: Errors in port declarations.
+tb/assertions/axi4_lite_sva.sv:5: syntax error
+tb/assertions/axi4_lite_sva.sv:5: Errors in port declarations.
+tb/assertions/axi4_lite_sva.sv:13: syntax error
+tb/assertions/axi4_lite_sva.sv:13: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:14: syntax error
+tb/assertions/axi4_lite_sva.sv:17: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:18: syntax error
+tb/assertions/axi4_lite_sva.sv:21: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:25: syntax error
+tb/assertions/axi4_lite_sva.sv:25: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:26: syntax error
+tb/assertions/axi4_lite_sva.sv:29: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:30: syntax error
+tb/assertions/axi4_lite_sva.sv:33: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:41: syntax error
+tb/assertions/axi4_lite_sva.sv:41: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:42: syntax error
+tb/assertions/axi4_lite_sva.sv:45: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:46: syntax error
+tb/assertions/axi4_lite_sva.sv:49: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:53: syntax error
+tb/assertions/axi4_lite_sva.sv:53: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:54: syntax error
+tb/assertions/axi4_lite_sva.sv:57: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:58: syntax error
+tb/assertions/axi4_lite_sva.sv:61: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:65: syntax error
+tb/assertions/axi4_lite_sva.sv:65: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:66: syntax error
+tb/assertions/axi4_lite_sva.sv:69: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:70: syntax error
+tb/assertions/axi4_lite_sva.sv:73: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:81: syntax error
+tb/assertions/axi4_lite_sva.sv:81: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:82: syntax error
+tb/assertions/axi4_lite_sva.sv:85: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:86: syntax error
+tb/assertions/axi4_lite_sva.sv:89: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:93: syntax error
+tb/assertions/axi4_lite_sva.sv:93: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:94: syntax error
+tb/assertions/axi4_lite_sva.sv:97: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:98: syntax error
+tb/assertions/axi4_lite_sva.sv:101: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:109: syntax error
+tb/assertions/axi4_lite_sva.sv:109: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:110: syntax error
+tb/assertions/axi4_lite_sva.sv:113: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:114: syntax error
+tb/assertions/axi4_lite_sva.sv:117: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:121: syntax error
+tb/assertions/axi4_lite_sva.sv:121: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:122: syntax error
+tb/assertions/axi4_lite_sva.sv:125: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:126: syntax error
+tb/assertions/axi4_lite_sva.sv:129: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:137: syntax error
+tb/assertions/axi4_lite_sva.sv:137: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:138: syntax error
+tb/assertions/axi4_lite_sva.sv:141: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:142: syntax error
+tb/assertions/axi4_lite_sva.sv:145: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:149: syntax error
+tb/assertions/axi4_lite_sva.sv:149: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:150: syntax error
+tb/assertions/axi4_lite_sva.sv:153: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:154: syntax error
+tb/assertions/axi4_lite_sva.sv:157: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:161: syntax error
+tb/assertions/axi4_lite_sva.sv:161: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:162: syntax error
+tb/assertions/axi4_lite_sva.sv:165: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:166: syntax error
+tb/assertions/axi4_lite_sva.sv:169: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:177: syntax error
+tb/assertions/axi4_lite_sva.sv:177: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:178: syntax error
+tb/assertions/axi4_lite_sva.sv:181: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:182: syntax error
+tb/assertions/axi4_lite_sva.sv:185: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:189: syntax error
+tb/assertions/axi4_lite_sva.sv:189: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:190: syntax error
+tb/assertions/axi4_lite_sva.sv:193: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:194: syntax error
+tb/assertions/axi4_lite_sva.sv:197: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:205: syntax error
+tb/assertions/axi4_lite_sva.sv:205: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:206: syntax error
+tb/assertions/axi4_lite_sva.sv:207: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:208: syntax error
+tb/assertions/axi4_lite_sva.sv:211: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:214: syntax error
+tb/assertions/axi4_lite_sva.sv:214: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:215: syntax error
+tb/assertions/axi4_lite_sva.sv:216: error: invalid module item.
+tb/assertions/axi4_lite_sva.sv:217: syntax error
+tb/assertions/axi4_lite_sva.sv:220: error: invalid module item.
+tb/fault_injection/axi4_lite_fault_injection.sv:5: syntax error
+tb/fault_injection/axi4_lite_fault_injection.sv:5: Errors in port declarations.
+tb/coverage/axi4_lite_coverage.sv:5: syntax error
+tb/coverage/axi4_lite_coverage.sv:5: Errors in port declarations.
