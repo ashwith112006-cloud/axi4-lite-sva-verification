@@ -538,4 +538,10 @@ module tb_top;
         .rdata(rdata), .rresp(rresp), .rvalid(rvalid), .rready(rready)
     );
 `endif
+  // Watchdog: stop the simulation if a test hangs (e.g. a missing response)
+    initial begin
+        #50000;
+        $display("[TB] WATCHDOG TIMEOUT: simulation did not finish");
+        $finish;
+    end
 endmodule
