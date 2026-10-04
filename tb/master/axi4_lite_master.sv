@@ -38,11 +38,12 @@ module axi4_lite_master #(
         rready  = 1'b0;
     end
 
-    // Rule used in every channel below:
-    //  - drive signals right after a rising clock edge
-    //  - look at the other side's READY/VALID in the MIDDLE of the cycle
-    //    (falling edge), when nothing is changing
-    //  - if it was high, the handshake happens on the next rising edge
+    // TIMING RULE: this master changes its outputs and reads the slave's
+    // outputs only at the FALLING clock edge (middle of the cycle). The slave
+    // and the checkers work at the RISING edge. So nobody reads a signal at
+    // the moment it changes, and every simulator gives the same result.
+    // A transfer happens at the rising edge that follows a falling edge
+    // where VALID and READY were both high.
 
     task automatic write(
         input logic [ADDR_WIDTH-1:0]   addr,
@@ -53,44 +54,51 @@ module axi4_lite_master #(
         logic [1:0] resp_seen;
         begin
             // Write address channel
+            @(negedge aclk);
+            awaddr  = addr;
+            awvalid = 1'b1;
+            seen    = awready;
             @(posedge aclk);
-            awaddr  <= addr;
-            awvalid <= 1'b1;
-            seen = 1'b0;
             while (!seen) begin
                 @(negedge aclk);
                 seen = awready;
                 @(posedge aclk);
             end
-            awvalid <= 1'b0;
+            @(negedge aclk);
+            awvalid = 1'b0;
 
             // Write data channel
-            wdata  <= data;
-            wstrb  <= strb;
-            wvalid <= 1'b1;
-            seen = 1'b0;
+            wdata  = data;
+            wstrb  = strb;
+            wvalid = 1'b1;
+            seen   = wready;
+            @(posedge aclk);
             while (!seen) begin
                 @(negedge aclk);
                 seen = wready;
                 @(posedge aclk);
             end
-            wvalid <= 1'b0;
+            @(negedge aclk);
+            wvalid = 1'b0;
 
             // Write response channel
-            bready <= 1'b1;
-            seen = 1'b0;
+            bready    = 1'b1;
+            seen      = bvalid;
+            resp_seen = bresp;
+            @(posedge aclk);
             while (!seen) begin
                 @(negedge aclk);
-                seen = bvalid;
+                seen      = bvalid;
                 resp_seen = bresp;
                 @(posedge aclk);
             end
+            @(negedge aclk);
+            bready = 1'b0;
             last_bresp = resp_seen;
             if (resp_seen == 2'b00)
                 $display("[MASTER] WRITE SUCCESS ADDR=%h DATA=%h", addr, data);
             else
                 $display("[MASTER] WRITE RESPONSE ERROR ADDR=%h BRESP=%b", addr, resp_seen);
-            bready <= 1'b0;
         end
     endtask
 
@@ -103,34 +111,40 @@ module axi4_lite_master #(
         logic [DATA_WIDTH-1:0] data_seen;
         begin
             // Read address channel
+            @(negedge aclk);
+            araddr  = addr;
+            arvalid = 1'b1;
+            seen    = arready;
             @(posedge aclk);
-            araddr  <= addr;
-            arvalid <= 1'b1;
-            seen = 1'b0;
             while (!seen) begin
                 @(negedge aclk);
                 seen = arready;
                 @(posedge aclk);
             end
-            arvalid <= 1'b0;
+            @(negedge aclk);
+            arvalid = 1'b0;
 
             // Read data channel
-            rready <= 1'b1;
-            seen = 1'b0;
+            rready    = 1'b1;
+            seen      = rvalid;
+            data_seen = rdata;
+            resp_seen = rresp;
+            @(posedge aclk);
             while (!seen) begin
                 @(negedge aclk);
-                seen = rvalid;
+                seen      = rvalid;
                 data_seen = rdata;
                 resp_seen = rresp;
                 @(posedge aclk);
             end
-            data = data_seen;
+            @(negedge aclk);
+            rready = 1'b0;
+            data       = data_seen;
             last_rresp = resp_seen;
             if (resp_seen == 2'b00)
                 $display("[MASTER] READ SUCCESS ADDR=%h DATA=%h", addr, data);
             else
                 $display("[MASTER] READ RESPONSE ERROR ADDR=%h RRESP=%b", addr, resp_seen);
-            rready <= 1'b0;
         end
     endtask
 endmodule
