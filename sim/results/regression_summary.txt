@@ -1,12 +1,12 @@
 == CLEAN RUN (Icarus) ==
-[TEST] EXTRA TESTS: 17 passed, 0 failed
-CHECKS = 30  ERRORS = 0
+[TEST] EXTRA TESTS: 21 passed, 0 failed
+CHECKS = 33  ERRORS = 0
 SCOREBOARD RESULT: PASS
 COVERED BINS    = 21 / 21
 COVERAGE        = 100.00%
 == CLEAN RUN (Verilator + SVA) ==
-[TEST] EXTRA TESTS: 17 passed, 0 failed
-CHECKS = 30  ERRORS = 0
+[TEST] EXTRA TESTS: 21 passed, 0 failed
+CHECKS = 33  ERRORS = 0
 SCOREBOARD RESULT: PASS
 SVA FAILS = 0
 SANITY: AW stall cycles = 4
@@ -14,22 +14,5 @@ SANITY: W  stall cycles = 4
 SANITY: AR stall cycles = 4
 SANITY: B  stall cycles = 2
 SANITY: R  stall cycles = 3
-SANITY: B handshakes    = 15
-SANITY: R handshakes    = 15
-== RTL MUTANTS ==
-MISSING_B        SVA_caught=YES scoreboard=FAIL tests_failed=n/a
-MISSING_R        SVA_caught=YES scoreboard=FAIL tests_failed=n/a
-BVALID_DROP      SVA_caught=YES scoreboard=FAIL tests_failed=n/a
-RDATA_UNSTABLE   SVA_caught=YES scoreboard=FAIL tests_failed=1
-ILLEGAL_BRESP    SVA_caught=YES scoreboard=FAIL tests_failed=3
-ILLEGAL_RRESP    SVA_caught=YES scoreboard=FAIL tests_failed=0
-STRB_IGNORED     SVA_caught=NO  scoreboard=FAIL tests_failed=7
-ADDR_ALIAS       SVA_caught=NO  scoreboard=FAIL tests_failed=6
-== MASTER-SIDE FAULTS ==
-AWVALID_DROP: injected=1440000 rule=A01_AWVALID_HOLD fail_t=1445000 latency_ns=5 scoreboard=PASS
-AWADDR_CHANGE: injected=1440000 rule=A02_AWADDR_STABLE fail_t=1445000 latency_ns=5 scoreboard=PASS
-WVALID_DROP: injected=1490000 rule=A03_WVALID_HOLD fail_t=1495000 latency_ns=5 scoreboard=PASS
-WDATA_CHANGE: injected=1490000 rule=A04_WDATA_STABLE fail_t=1495000 latency_ns=5 scoreboard=PASS
-WSTRB_CHANGE: injected=1490000 rule=A05_WSTRB_STABLE fail_t=1495000 latency_ns=5 scoreboard=PASS
-ARVALID_DROP: injected=1440000 rule=A06_ARVALID_HOLD fail_t=1445000 latency_ns=5 scoreboard=PASS
-ARADDR_CHANGE: injected=1440000 rule=A07_ARADDR_STABLE fail_t=1445000 latency_ns=5 scoreboard=PASS
+SANITY: B handshakes    = 16
+SANITY: R handshakes    = 17
