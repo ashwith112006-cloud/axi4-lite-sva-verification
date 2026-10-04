@@ -25,6 +25,8 @@ module axi4_lite_master #(
     // Last response codes seen, so tests can check them
     logic [1:0] last_bresp = 2'b00;
     logic [1:0] last_rresp = 2'b00;
+    integer b_delay = 0;
+    integer r_delay = 0;
 
     initial begin
         awaddr  = '0;
@@ -82,6 +84,7 @@ module axi4_lite_master #(
             wvalid = 1'b0;
 
             // Write response channel
+            repeat (b_delay) @(negedge aclk);
             bready    = 1'b1;
             seen      = bvalid;
             resp_seen = bresp;
@@ -125,6 +128,7 @@ module axi4_lite_master #(
             arvalid = 1'b0;
 
             // Read data channel
+            repeat (r_delay) @(negedge aclk);
             rready    = 1'b1;
             seen      = rvalid;
             data_seen = rdata;

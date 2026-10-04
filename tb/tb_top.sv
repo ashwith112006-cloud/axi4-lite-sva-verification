@@ -485,6 +485,16 @@ module tb_top;
         `CHK(2'b10, master.last_rresp, "INVALID READ RRESP=SLVERR")
         `CHK(32'h0000_0000, read_data, "INVALID READ data zero")
 
+// --- backpressure: master delays BREADY and RREADY (creates stalls)
+        master.b_delay = 3;
+        master.r_delay = 3;
+        master.write(32'h0000_0004, 32'hA5A5_5A5A, 4'b1111);
+        `CHK(2'b00, master.last_bresp, "BACKPRESSURE WRITE BRESP=OKAY")
+        master.read (32'h0000_0004, read_data);
+        `CHK(32'hA5A5_5A5A, read_data, "BACKPRESSURE READ DATA")
+        master.b_delay = 0;
+        master.r_delay = 0;
+
         $display("[TEST] EXTRA TESTS: %0d passed, %0d failed", ext_pass, ext_fail);
 
         // END TEST
