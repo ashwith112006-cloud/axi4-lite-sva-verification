@@ -447,6 +447,7 @@ module tb_top;
         // ==========================================
         master.write(32'h0000_0000, 32'hFFFF_FFFF, 4'b1111);
         master.write(32'h0000_0000, 32'h1122_3344, 4'b0001);
+        `CHK(2'b00, master.last_bresp, "WRITE BRESP=OKAY")
         master.read (32'h0000_0000, read_data);
         `CHK(32'hFFFF_FF44, read_data, "WSTRB 0001")
 
@@ -471,14 +472,17 @@ module tb_top;
         `CHK(32'h11BB_33DD, read_data, "WSTRB 0000 no change")
 
         master.write(32'h1000_0000, 32'hDEAD_BEEF, 4'b1111);
+        `CHK(2'b10, master.last_bresp, "INVALID WRITE 10000000 BRESP=SLVERR")
+
         master.read (32'h0000_0000, read_data);
         `CHK(32'h11BB_33DD, read_data, "INVALID WRITE 10000000")
 
         master.write(32'h0000_0040, 32'hDEAD_BEEF, 4'b1111);
+        `CHK(2'b10, master.last_bresp, "INVALID WRITE 00000040 BRESP=SLVERR")
         master.read (32'h0000_0000, read_data);
         `CHK(32'h11BB_33DD, read_data, "INVALID WRITE 00000040")
-
         master.read (32'h1000_0000, read_data);
+        `CHK(2'b10, master.last_rresp, "INVALID READ RRESP=SLVERR")
         `CHK(32'h0000_0000, read_data, "INVALID READ data zero")
 
         $display("[TEST] EXTRA TESTS: %0d passed, %0d failed", ext_pass, ext_fail);

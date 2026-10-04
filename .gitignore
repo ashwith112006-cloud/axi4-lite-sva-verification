@@ -1,0 +1,3 @@
+sim/*.out
+sim/waves/*.vcd
+sim/logs/
