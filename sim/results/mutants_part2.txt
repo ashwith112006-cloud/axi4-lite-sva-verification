@@ -1,0 +1,16 @@
+=== MUTANT: ILLEGAL_RRESP ===
+SVA rules that fired:
+       16 [SVA_FAIL] A14_RRESP_LEGAL
+First SVA failure: [SVA_FAIL] A14_RRESP_LEGAL at time 125000
+  [TEST] EXTRA TESTS: 15 passed, 0 failed
+  SCOREBOARD RESULT: FAIL
+=== MUTANT: STRB_IGNORED ===
+SVA rules that fired:
+First SVA failure: none
+  [TEST] EXTRA TESTS: 8 passed, 7 failed
+  SCOREBOARD RESULT: FAIL
+=== MUTANT: ADDR_ALIAS ===
+SVA rules that fired:
+First SVA failure: none
+  [TEST] EXTRA TESTS: 9 passed, 6 failed
+  SCOREBOARD RESULT: FAIL

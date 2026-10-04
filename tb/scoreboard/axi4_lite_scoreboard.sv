@@ -162,7 +162,7 @@ module axi4_lite_scoreboard #(
         $display("            SCOREBOARD SUMMARY");
         $display("==============================================");
         $display("CHECKS = %0d  ERRORS = %0d", checks, errors);
-        if (errors == 0 && checks > 0)
+        if (errors == 0 && checks > 0 && !bresp_pending && !rd_pending && !aw_got && !w_got)
             $display("SCOREBOARD RESULT: PASS");
         else
             $display("SCOREBOARD RESULT: FAIL");
