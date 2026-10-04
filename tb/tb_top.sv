@@ -481,6 +481,15 @@ module tb_top;
         end
         dut.ready_delay = 0;
 
+ // --- unaligned addresses are invalid (SLVERR, no effect)
+        master.write(32'h0000_0001, 32'hBAD0_BAD0, 4'b1111);
+        `CHK(2'b10, master.last_bresp, "UNALIGNED WRITE 0x1 BRESP=SLVERR")
+        master.read (32'h0000_0000, read_data);
+        `CHK(32'h11BB_33DD, read_data, "UNALIGNED WRITE no effect")
+        master.read (32'h0000_0002, read_data);
+        `CHK(2'b10, master.last_rresp, "UNALIGNED READ 0x2 RRESP=SLVERR")
+        `CHK(32'h0000_0000, read_data, "UNALIGNED READ data zero")
+
         $display("[TEST] EXTRA TESTS: %0d passed, %0d failed", ext_pass, ext_fail);
 
         // END TEST

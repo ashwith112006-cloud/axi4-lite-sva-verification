@@ -103,7 +103,7 @@ module axi4_lite_coverage #(
             // WRITE ADDRESS
             if (awvalid && awready) begin
 
-                case (awaddr[31:4] == 28'd0 ? awaddr[5:2] : 4'hF)
+                case ((awaddr[31:4] == 28'd0 && awaddr[1:0] == 2'b00) ? awaddr[5:2] : 4'hF)
 
                     4'd0:
                         write_reg0_count = write_reg0_count + 1;
@@ -181,7 +181,7 @@ module axi4_lite_coverage #(
             // READ ADDRESS
             if (arvalid && arready) begin
 
-                case (araddr[31:4] == 28'd0 ? araddr[5:2] : 4'hF)
+                case ((araddr[31:4] == 28'd0 && araddr[1:0] == 2'b00) ? araddr[5:2] : 4'hF)
 
                     4'd0:
                         read_reg0_count =

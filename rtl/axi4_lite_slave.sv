@@ -163,7 +163,7 @@ module axi4_lite_slave #(
 
             if (aw_received && w_received && !s_axi_bvalid) begin
 
-                case (awaddr_reg[31:4] == 28'd0 ? awaddr_reg[5:2] : 4'hF)
+                case ((awaddr_reg[31:4] == 28'd0 && awaddr_reg[1:0] == 2'b00) ? awaddr_reg[5:2] : 4'hF)
 
                     4'd0: begin
 
@@ -269,7 +269,7 @@ module axi4_lite_slave #(
 
             if (s_axi_arvalid && s_axi_arready) begin
 
-                case (s_axi_araddr[31:4] == 28'd0 ? s_axi_araddr[5:2] : 4'hF)
+                case ((s_axi_araddr[31:4] == 28'd0 && s_axi_araddr[1:0] == 2'b00) ? s_axi_araddr[5:2] : 4'hF)
 
                     4'd0: begin
                         s_axi_rdata <= reg0;
