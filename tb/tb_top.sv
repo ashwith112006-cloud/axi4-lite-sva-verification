@@ -274,6 +274,13 @@ module tb_top;
     integer ext_pass = 0;
     integer ext_fail = 0;
     integer fault_sel = 0;
+    integer rseed = 1;
+    integer rnd_cnt = 0;
+    integer rnd_n = 0;
+    integer rnd_sel = 0;
+    logic [31:0] rnd_addr;
+    logic [31:0] rnd_data;
+    logic [3:0]  rnd_strb;
 `define CHK(EXP, ACT, NAME) \
     if ((ACT) === (EXP)) begin \
         $display("[TEST] %s PASS", NAME); \
@@ -490,6 +497,31 @@ module tb_top;
         `CHK(2'b10, master.last_rresp, "UNALIGNED READ 0x2 RRESP=SLVERR")
         `CHK(32'h0000_0000, read_data, "UNALIGNED READ data zero")
 
+ // --- constrained-random traffic (run with +SEED=n +RANDN=count)
+        if (!$value$plusargs("SEED=%d", rseed)) rseed = 1;
+        if (!$value$plusargs("RANDN=%d", rnd_cnt)) rnd_cnt = 0;
+        for (rnd_n = 0; rnd_n < rnd_cnt; rnd_n = rnd_n + 1) begin
+            dut.ready_delay = $random(rseed) & 3;
+            master.b_delay  = $random(rseed) & 3;
+            master.r_delay  = $random(rseed) & 3;
+            rnd_sel = $random(rseed) & 7;
+            case (rnd_sel)
+                0: rnd_addr = 32'h0000_0000;
+                1: rnd_addr = 32'h0000_0004;
+                2: rnd_addr = 32'h0000_0008;
+                3: rnd_addr = 32'h0000_000C;
+                4: rnd_addr = 32'h0000_0010;
+                5: rnd_addr = 32'h0000_0001;
+                6: rnd_addr = 32'h1000_0004;
+                default: rnd_addr = 32'h0000_0008;
+            endcase
+            rnd_data = $random(rseed);
+            rnd_strb = $random(rseed);
+            if ($random(rseed) & 1) master.write(rnd_addr, rnd_data, rnd_strb);
+            else                    master.read (rnd_addr, read_data);
+        end
+        dut.ready_delay = 0; master.b_delay = 0; master.r_delay = 0;
+
         $display("[TEST] EXTRA TESTS: %0d passed, %0d failed", ext_pass, ext_fail);
 
         // END TEST
@@ -535,7 +567,7 @@ module tb_top;
 `endif
   // Watchdog: stop the simulation if a test hangs (e.g. a missing response)
     initial begin
-        #50000;
+        #500000;
         $display("[TB] WATCHDOG TIMEOUT: simulation did not finish");
         $finish;
     end
