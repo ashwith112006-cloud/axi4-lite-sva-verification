@@ -484,6 +484,18 @@ module tb_top;
         master.b_delay = 0;
         master.r_delay = 0;
 
+        // --- AWREADY must stay low while B response is pending (kills m001)
+        master.b_delay = 8;
+        fork
+            master.write(32'h0000_0004, 32'hA5A5_5A5A, 4'b1111);
+            begin
+                wait (dut.s_axi_bvalid === 1'b1);
+                repeat (2) @(negedge aclk);
+                `CHK(1'b0, dut.s_axi_awready, "AWREADY LOW WHILE B PENDING")
+            end
+        join
+        master.b_delay = 0;
+
  // --- stall test: slave holds READY low for 4 cycles (exercises A01-A07)
         if (!$value$plusargs("FAULT=%d", fault_sel)) fault_sel = 0;
         dut.ready_delay = 4;
