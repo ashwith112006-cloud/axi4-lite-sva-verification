@@ -1,0 +1,31 @@
+id	line	operator	original	mutated
+m001	87	AND_TO_OR	assign s_axi_awready = !aw_received && !s_axi_bvalid && (aw_wait >= ready_delay);	assign s_axi_awready = !aw_received && !s_axi_bvalid || (aw_wait >= ready_delay);
+m002	252	BIT_FLIP	aw_received <= 1'b0;	aw_received <= 1'b1;
+m003	279	CONST_MINUS1	4'd1: begin	4'd0: begin
+m004	168	CONST_PLUS1	4'd0: begin	4'd1: begin
+m005	166	EQ_TO_NEQ	case ((awaddr_reg[31:4] == 28'd0 && awaddr_reg[1:0] == 2'b00) ? awaddr_reg[5:2] : 4'hF)	case ((awaddr_reg[31:4] != 28'd0 && awaddr_reg[1:0] == 2'b00) ? awaddr_reg[5:2] : 4'hF)
+m006	206	IF_NEGATE	if (wstrb_reg[0])	if (!(wstrb_reg[0]))
+m007	234	STUCK0	reg3[31:24] <= wdata_reg[31:24];	reg3[31:24] <= '0;
+m008	153	STUCK1	wstrb_reg <= s_axi_wstrb;	wstrb_reg <= '1;
+m009	79	AND_TO_OR	ar_wait <= (s_axi_arvalid && !s_axi_arready) ? ar_wait + 1 : 0;	ar_wait <= (s_axi_arvalid || !s_axi_arready) ? ar_wait + 1 : 0;
+m010	262	BIT_FLIP	s_axi_bvalid <= 1'b0;	s_axi_bvalid <= 1'b1;
+m011	204	CONST_MINUS1	4'd2: begin	4'd1: begin
+m012	166	CONST_PLUS1	case ((awaddr_reg[31:4] == 28'd0 && awaddr_reg[1:0] == 2'b00) ? awaddr_reg[5:2] : 4'hF)	case ((awaddr_reg[31:4] == 28'd1 && awaddr_reg[1:0] == 2'b00) ? awaddr_reg[5:2] : 4'hF)
+m013	272	EQ_TO_NEQ	case ((s_axi_araddr[31:4] == 28'd0 && s_axi_araddr[1:0] == 2'b00) ? s_axi_araddr[5:2] : 4'hF)	case ((s_axi_araddr[31:4] != 28'd0 && s_axi_araddr[1:0] == 2'b00) ? s_axi_araddr[5:2] : 4'hF)
+m014	224	IF_NEGATE	if (wstrb_reg[0])	if (!(wstrb_reg[0]))
+m015	195	STUCK0	reg1[23:16] <= wdata_reg[23:16];	reg1[23:16] <= '0;
+m016	152	STUCK1	wdata_reg <= s_axi_wdata;	wdata_reg <= '1;
+m017	309	AND_TO_OR	if (s_axi_rvalid && s_axi_rready) begin	if (s_axi_rvalid || s_axi_rready) begin
+m018	120	BIT_FLIP	aw_received <= 1'b0;	aw_received <= 1'b1;
+m019	166	CONST_MINUS1	case ((awaddr_reg[31:4] == 28'd0 && awaddr_reg[1:0] == 2'b00) ? awaddr_reg[5:2] : 4'hF)	case ((awaddr_reg[31:4] == 28'd0 && awaddr_reg[1:0] == 2'b00) ? awaddr_reg[5:2] : 4'he)
+m020	279	CONST_PLUS1	4'd1: begin	4'd2: begin
+m021	272	EQ_TO_NEQ	case ((s_axi_araddr[31:4] == 28'd0 && s_axi_araddr[1:0] == 2'b00) ? s_axi_araddr[5:2] : 4'hF)	case ((s_axi_araddr[31:4] == 28'd0 && s_axi_araddr[1:0] != 2'b00) ? s_axi_araddr[5:2] : 4'hF)
+m022	170	IF_NEGATE	if (wstrb_reg[0])	if (!(wstrb_reg[0]))
+m023	182	STUCK0	s_axi_bresp <= RESP_OKAY;	s_axi_bresp <= '0;
+m024	231	STUCK1	reg3[23:16] <= wdata_reg[23:16];	reg3[23:16] <= '1;
+m025	78	AND_TO_OR	w_wait  <= (s_axi_wvalid  && !s_axi_wready ) ? w_wait  + 1 : 0;	w_wait  <= (s_axi_wvalid  || !s_axi_wready ) ? w_wait  + 1 : 0;
+m026	128	BIT_FLIP	s_axi_rvalid <= 1'b0;	s_axi_rvalid <= 1'b1;
+m027	186	CONST_MINUS1	4'd1: begin	4'd0: begin
+m028	284	CONST_PLUS1	4'd2: begin	4'd3: begin
+m029	166	EQ_TO_NEQ	case ((awaddr_reg[31:4] == 28'd0 && awaddr_reg[1:0] == 2'b00) ? awaddr_reg[5:2] : 4'hF)	case ((awaddr_reg[31:4] == 28'd0 && awaddr_reg[1:0] != 2'b00) ? awaddr_reg[5:2] : 4'hF)
+m030	270	IF_NEGATE	if (s_axi_arvalid && s_axi_arready) begin	if (!(s_axi_arvalid && s_axi_arready)) begin

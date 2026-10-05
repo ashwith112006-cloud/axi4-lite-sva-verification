@@ -1,0 +1,57 @@
+BASELINE SVA fails: 0 (must be 0)
+BASELINE checker lines:
+[TEST] EXTRA TESTS: 21 passed, 0 failed
+SCOREBOARD RESULT: PASS
+m001	87	AND_TO_OR	assign s_axi_awready = !aw_received && !s_axi_bvalid && (aw_wait >= ready_delay);	assign s_axi_awready = !aw_received && !s_axi_bvalid || (aw_wait >= ready_delay);	SURVIVED	-
+m002	252	BIT_FLIP	aw_received <= 1'b0;	aw_received <= 1'b1;	CHECKER_ONLY	-
+./scripts/run_mutants.sh: line 6:  3590 Aborted                 timeout 120 stdbuf -o0 "$2/obj/vtb" $MUT_ARGS > "$2/run.log" 2>&1
+m003	279	CONST_MINUS1	4'd1: begin	4'd0: begin	CHECKER_ONLY	-
+./scripts/run_mutants.sh: line 6:  3653 Aborted                 timeout 120 stdbuf -o0 "$2/obj/vtb" $MUT_ARGS > "$2/run.log" 2>&1
+m004	168	CONST_PLUS1	4'd0: begin	4'd1: begin	CHECKER_ONLY	-
+./scripts/run_mutants.sh: line 6:  3716 Aborted                 timeout 120 stdbuf -o0 "$2/obj/vtb" $MUT_ARGS > "$2/run.log" 2>&1
+m005	166	EQ_TO_NEQ	case ((awaddr_reg[31:4] == 28'd0 && awaddr_reg[1:0] == 2'b00) ? awaddr_reg[5:2] : 4'hF)	case ((awaddr_reg[31:4] != 28'd0 && awaddr_reg[1:0] == 2'b00) ? awaddr_reg[5:2] : 4'hF)	CHECKER_ONLY	-
+./scripts/run_mutants.sh: line 6:  3781 Aborted                 timeout 120 stdbuf -o0 "$2/obj/vtb" $MUT_ARGS > "$2/run.log" 2>&1
+m006	206	IF_NEGATE	if (wstrb_reg[0])	if (!(wstrb_reg[0]))	CHECKER_ONLY	-
+./scripts/run_mutants.sh: line 6:  3846 Aborted                 timeout 120 stdbuf -o0 "$2/obj/vtb" $MUT_ARGS > "$2/run.log" 2>&1
+m007	234	STUCK0	reg3[31:24] <= wdata_reg[31:24];	reg3[31:24] <= '0;	CHECKER_ONLY	-
+m008	153	STUCK1	wstrb_reg <= s_axi_wstrb;	wstrb_reg <= '1;	CHECKER_ONLY	-
+m009	79	AND_TO_OR	ar_wait <= (s_axi_arvalid && !s_axi_arready) ? ar_wait + 1 : 0;	ar_wait <= (s_axi_arvalid || !s_axi_arready) ? ar_wait + 1 : 0;	SURVIVED	-
+m010	262	BIT_FLIP	s_axi_bvalid <= 1'b0;	s_axi_bvalid <= 1'b1;	BOTH	A16_NO_B_WITHOUT_WRITE
+./scripts/run_mutants.sh: line 6:  4093 Aborted                 timeout 120 stdbuf -o0 "$2/obj/vtb" $MUT_ARGS > "$2/run.log" 2>&1
+m011	204	CONST_MINUS1	4'd2: begin	4'd1: begin	CHECKER_ONLY	-
+./scripts/run_mutants.sh: line 6:  4156 Aborted                 timeout 120 stdbuf -o0 "$2/obj/vtb" $MUT_ARGS > "$2/run.log" 2>&1
+m012	166	CONST_PLUS1	case ((awaddr_reg[31:4] == 28'd0 && awaddr_reg[1:0] == 2'b00) ? awaddr_reg[5:2] : 4'hF)	case ((awaddr_reg[31:4] == 28'd1 && awaddr_reg[1:0] == 2'b00) ? awaddr_reg[5:2] : 4'hF)	CHECKER_ONLY	-
+./scripts/run_mutants.sh: line 6:  4219 Aborted                 timeout 120 stdbuf -o0 "$2/obj/vtb" $MUT_ARGS > "$2/run.log" 2>&1
+m013	272	EQ_TO_NEQ	case ((s_axi_araddr[31:4] == 28'd0 && s_axi_araddr[1:0] == 2'b00) ? s_axi_araddr[5:2] : 4'hF)	case ((s_axi_araddr[31:4] != 28'd0 && s_axi_araddr[1:0] == 2'b00) ? s_axi_araddr[5:2] : 4'hF)	CHECKER_ONLY	-
+./scripts/run_mutants.sh: line 6:  4284 Aborted                 timeout 120 stdbuf -o0 "$2/obj/vtb" $MUT_ARGS > "$2/run.log" 2>&1
+m014	224	IF_NEGATE	if (wstrb_reg[0])	if (!(wstrb_reg[0]))	CHECKER_ONLY	-
+./scripts/run_mutants.sh: line 6:  4351 Aborted                 timeout 120 stdbuf -o0 "$2/obj/vtb" $MUT_ARGS > "$2/run.log" 2>&1
+m015	195	STUCK0	reg1[23:16] <= wdata_reg[23:16];	reg1[23:16] <= '0;	CHECKER_ONLY	-
+./scripts/run_mutants.sh: line 6:  4414 Aborted                 timeout 120 stdbuf -o0 "$2/obj/vtb" $MUT_ARGS > "$2/run.log" 2>&1
+m016	152	STUCK1	wdata_reg <= s_axi_wdata;	wdata_reg <= '1;	CHECKER_ONLY	-
+m017	309	AND_TO_OR	if (s_axi_rvalid && s_axi_rready) begin	if (s_axi_rvalid || s_axi_rready) begin	BOTH	A10_RVALID_HOLD+A19_R_TIMEOUT
+m018	120	BIT_FLIP	aw_received <= 1'b0;	aw_received <= 1'b1;	CHECKER_ONLY	-
+m019	166	CONST_MINUS1	case ((awaddr_reg[31:4] == 28'd0 && awaddr_reg[1:0] == 2'b00) ? awaddr_reg[5:2] : 4'hF)	case ((awaddr_reg[31:4] == 28'd0 && awaddr_reg[1:0] == 2'b00) ? awaddr_reg[5:2] : 4'he)	SURVIVED	-
+./scripts/run_mutants.sh: line 6:  4662 Aborted                 timeout 120 stdbuf -o0 "$2/obj/vtb" $MUT_ARGS > "$2/run.log" 2>&1
+m020	279	CONST_PLUS1	4'd1: begin	4'd2: begin	CHECKER_ONLY	-
+./scripts/run_mutants.sh: line 6:  4725 Aborted                 timeout 120 stdbuf -o0 "$2/obj/vtb" $MUT_ARGS > "$2/run.log" 2>&1
+m021	272	EQ_TO_NEQ	case ((s_axi_araddr[31:4] == 28'd0 && s_axi_araddr[1:0] == 2'b00) ? s_axi_araddr[5:2] : 4'hF)	case ((s_axi_araddr[31:4] == 28'd0 && s_axi_araddr[1:0] != 2'b00) ? s_axi_araddr[5:2] : 4'hF)	CHECKER_ONLY	-
+./scripts/run_mutants.sh: line 6:  4788 Aborted                 timeout 120 stdbuf -o0 "$2/obj/vtb" $MUT_ARGS > "$2/run.log" 2>&1
+m022	170	IF_NEGATE	if (wstrb_reg[0])	if (!(wstrb_reg[0]))	CHECKER_ONLY	-
+m023	182	STUCK0	s_axi_bresp <= RESP_OKAY;	s_axi_bresp <= '0;	SURVIVED	-
+./scripts/run_mutants.sh: line 6:  4914 Aborted                 timeout 120 stdbuf -o0 "$2/obj/vtb" $MUT_ARGS > "$2/run.log" 2>&1
+m024	231	STUCK1	reg3[23:16] <= wdata_reg[23:16];	reg3[23:16] <= '1;	CHECKER_ONLY	-
+m025	78	AND_TO_OR	w_wait  <= (s_axi_wvalid  && !s_axi_wready ) ? w_wait  + 1 : 0;	w_wait  <= (s_axi_wvalid  || !s_axi_wready ) ? w_wait  + 1 : 0;	SURVIVED	-
+m026	128	BIT_FLIP	s_axi_rvalid <= 1'b0;	s_axi_rvalid <= 1'b1;	BOTH	A15_RESET_RESP_LOW+A17_NO_R_WITHOUT_READ
+./scripts/run_mutants.sh: line 6:  5100 Aborted                 timeout 120 stdbuf -o0 "$2/obj/vtb" $MUT_ARGS > "$2/run.log" 2>&1
+m027	186	CONST_MINUS1	4'd1: begin	4'd0: begin	CHECKER_ONLY	-
+./scripts/run_mutants.sh: line 6:  5163 Aborted                 timeout 120 stdbuf -o0 "$2/obj/vtb" $MUT_ARGS > "$2/run.log" 2>&1
+m028	284	CONST_PLUS1	4'd2: begin	4'd3: begin	CHECKER_ONLY	-
+./scripts/run_mutants.sh: line 6:  5226 Aborted                 timeout 120 stdbuf -o0 "$2/obj/vtb" $MUT_ARGS > "$2/run.log" 2>&1
+m029	166	EQ_TO_NEQ	case ((awaddr_reg[31:4] == 28'd0 && awaddr_reg[1:0] == 2'b00) ? awaddr_reg[5:2] : 4'hF)	case ((awaddr_reg[31:4] == 28'd0 && awaddr_reg[1:0] != 2'b00) ? awaddr_reg[5:2] : 4'hF)	CHECKER_ONLY	-
+m030	270	IF_NEGATE	if (s_axi_arvalid && s_axi_arready) begin	if (!(s_axi_arvalid && s_axi_arready)) begin	BOTH	A11_RDATA_STABLE+A15_RESET_RESP_LOW+A17_NO_R_WITHOUT_READ
+
+SUMMARY:
+      4 BOTH
+     21 CHECKER_ONLY
+      5 SURVIVED
