@@ -1,5 +1,6 @@
 #!/bin/bash
 # Usage: scripts/mutate.sh <MUTANT_NAME>
+: "${MUT_ARGS:=+verilator+error+limit+1000}"
 cd "$(dirname "$0")/.." || exit 1
 M=$1
 D=/tmp/mut_$M
