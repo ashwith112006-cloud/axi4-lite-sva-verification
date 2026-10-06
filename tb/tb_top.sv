@@ -521,6 +521,25 @@ module tb_top;
         `CHK(2'b10, master.last_rresp, "UNALIGNED READ 0x2 RRESP=SLVERR")
         `CHK(32'h0000_0000, read_data, "UNALIGNED READ data zero")
 
+ // --- walking-ones address test: one set bit per address, expected from TB's own map
+        begin : walk1
+            integer wi;
+            reg walk_ok;
+            reg [1:0] wexp;
+            walk_ok = 1'b1;
+            for (wi = 0; wi < 32; wi = wi + 1) begin
+                wexp = (wi == 2 || wi == 3) ? 2'b00 : 2'b10;
+                master.write(32'h1 << wi, 32'hFFFF_FFFF, 4'b0000);
+                if (master.last_bresp !== wexp) walk_ok = 1'b0;
+                master.read (32'h1 << wi, read_data);
+                if (master.last_rresp !== wexp) walk_ok = 1'b0;
+                if (wexp == 2'b10 && read_data !== 32'h0000_0000) walk_ok = 1'b0;
+            end
+            `CHK(1'b1, walk_ok, "WALKING-ONES ADDRESS resp and data")
+            master.read (32'h0000_0000, read_data);
+            `CHK(32'h11BB_33DD, read_data, "WALKING-ONES no alias into REG0")
+        end
+
 
 // --- constrained-random traffic (run with +SEED=n +RANDN=count)
         if (!$value$plusargs("SEED=%d", rseed)) rseed = 1;
