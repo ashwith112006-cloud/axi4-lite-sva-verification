@@ -299,7 +299,7 @@ module tb_top;
         ext_pass = ext_pass + 1; \
     end else begin \
         $display("[TEST] %s FAIL EXPECTED=%h ACTUAL=%h", NAME, (EXP), (ACT)); \
-        ext_fail = ext_fail + 1; \
+        $display("[CHK_FAIL] TEST %s at time %0t", NAME, $time); ext_fail = ext_fail + 1; \
     end
 
     logic [DATA_WIDTH-1:0] read_data;
