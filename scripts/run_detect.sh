@@ -12,7 +12,7 @@ for L in /tmp/mutants/*/run.log; do
   [ -n "$s" ] && { sr=$(echo "$s" | awk '{print $2}'); ts=$(echo "$s" | tm); }
   [ -n "$c" ] && { cr=$(echo "$c" | awk '{print $2}'); tc=$(echo "$c" | tm); }
   if [ -n "$s" ] && [ -n "$c" ]; then
-    gap=$(( (tc - ts) / 10 ))
+    gap=$(( (tc - ts) / 10000 ))
     if [ "$tc" -lt "$ts" ]; then cls=CHK-first; else cls=SVA-first; fi
   elif [ -n "$s" ]; then
     if [ $sbf -eq 1 ] || [ $wd -eq 1 ]; then cls=SVA+end-of-test; else cls=SVA-only; fi
