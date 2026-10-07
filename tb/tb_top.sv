@@ -541,7 +541,7 @@ module tb_top;
         end
 
 
-// --- constrained-random traffic (run with +SEED=n +RANDN=count)
+// --- seeded random (custom xorshift PRNG) traffic (run with +SEED=n +RANDN=count)
         if (!$value$plusargs("SEED=%d", rseed)) rseed = 1;
         if (!$value$plusargs("RANDN=%d", rnd_cnt)) rnd_cnt = 0;
         rng = rseed ^ 32'hA5A5_1234;
