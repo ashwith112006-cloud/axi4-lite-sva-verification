@@ -609,7 +609,8 @@ module tb_top;
         .wdata(wdata), .wstrb(wstrb), .wvalid(wvalid), .wready(wready),
         .bresp(bresp), .bvalid(bvalid), .bready(bready),
         .araddr(araddr), .arvalid(arvalid), .arready(arready),
-        .rdata(rdata), .rresp(rresp), .rvalid(rvalid), .rready(rready)
+        .rdata(rdata), .rresp(rresp), .rvalid(rvalid), .rready(rready),
+        .ready_delay(dut.ready_delay)
     );
 `endif
   // Watchdog: stop the simulation if a test hangs (e.g. a missing response)

@@ -4,7 +4,10 @@ module axi4_lite_sva #(
     parameter ADDR_WIDTH = 32,
     parameter DATA_WIDTH = 32,
     parameter B_MAX_WAIT = 16,
-    parameter R_MAX_WAIT = 16
+    parameter R_MAX_WAIT = 16,
+    parameter AW_MAX_WAIT = 32,
+    parameter W_MAX_WAIT = 32,
+    parameter AR_MAX_WAIT = 32
 )(
     input logic                     aclk,
     input logic                     aresetn,
@@ -24,7 +27,8 @@ module axi4_lite_sva #(
     input logic [DATA_WIDTH-1:0]    rdata,
     input logic [1:0]               rresp,
     input logic                     rvalid,
-    input logic                     rready
+    input logic                     rready,
+    input integer                   ready_delay
 );
     integer sva_fail_total = 0;
 
@@ -118,6 +122,28 @@ module axi4_lite_sva #(
                 else `SVA_FAIL("A18_B_TIMEOUT")
             A19_R_TIMEOUT: assert (r_wait != R_MAX_WAIT + 1)
                 else `SVA_FAIL("A19_R_TIMEOUT")
+        end
+    end
+
+    // ---------- request-channel READY timing (A20-A22 timeout, A23 early READY) ----------
+    integer awv_wait = 0, wv_wait = 0, arv_wait = 0;
+    always @(posedge aclk) begin
+        if (!aresetn) begin
+            awv_wait <= 0; wv_wait <= 0; arv_wait <= 0;
+        end else begin
+            awv_wait <= (awvalid && !awready) ? awv_wait + 1 : 0;
+            wv_wait  <= (wvalid  && !wready ) ? wv_wait  + 1 : 0;
+            arv_wait <= (arvalid && !arready) ? arv_wait + 1 : 0;
+            A20_AWREADY_TIMEOUT: assert (awv_wait != AW_MAX_WAIT + 1)
+                else `SVA_FAIL("A20_AWREADY_TIMEOUT")
+            A21_WREADY_TIMEOUT: assert (wv_wait != W_MAX_WAIT + 1)
+                else `SVA_FAIL("A21_WREADY_TIMEOUT")
+            A22_ARREADY_TIMEOUT: assert (arv_wait != AR_MAX_WAIT + 1)
+                else `SVA_FAIL("A22_ARREADY_TIMEOUT")
+            A23_EARLY_READY: assert (!((awvalid && awready && awv_wait < ready_delay) ||
+                                       (wvalid  && wready  && wv_wait  < ready_delay) ||
+                                       (arvalid && arready && arv_wait < ready_delay)))
+                else `SVA_FAIL("A23_EARLY_READY")
         end
     end
 
