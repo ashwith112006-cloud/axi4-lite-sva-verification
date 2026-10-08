@@ -3,12 +3,12 @@
 Simplified 32-bit AXI4-Lite slave (4 registers at 0x0, 0x4, 0x8, 0xC) with a custom
 non-UVM SystemVerilog testbench: master BFM, monitor, scoreboard, manual coverage
 counters, 19 SVA assertions, RTL mutants, master-side fault injection and
-constrained-random traffic. Academic pre-silicon project, not a complete AXI VIP.
+seeded random (custom xorshift PRNG) traffic. Academic pre-silicon project, not a complete AXI VIP.
 
 ## Results
 | Check | Result |
 |---|---|
-| Constrained-random (10 seeds, own xorshift generator, random backpressure) | 133 checks/seed, 0 errors, 0 SVA fails |
+| seeded random (custom xorshift PRNG) (10 seeds, own xorshift generator, random backpressure) | 133 checks/seed, 0 errors, 0 SVA fails |
 | RTL mutants | 8/8 detected (6 by SVA, 2 by scoreboard only: STRB_IGNORED, ADDR_ALIAS) |
 | Master-side faults | 7/7 caught by SVA, 5 ns detection latency |
 | Unaligned addresses | Return SLVERR |

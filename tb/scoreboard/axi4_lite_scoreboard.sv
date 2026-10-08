@@ -104,14 +104,14 @@ module axi4_lite_scoreboard #(
             if (bvalid && bready) begin
                 checks = checks + 1;
                 if (!bresp_pending) begin
-                    errors = errors + 1;
+                    errors = errors + 1; $display("[CHK_FAIL] SB at time %0t", $time);
                     $display("[SCOREBOARD] ERROR: B handshake with no write pending");
                 end
                 else begin
                     if (bresp === exp_bresp)
                         $display("[SCOREBOARD] WRITE RESPONSE PASS: BRESP=%b", bresp);
                     else begin
-                        errors = errors + 1;
+                        errors = errors + 1; $display("[CHK_FAIL] SB at time %0t", $time);
                         $display("[SCOREBOARD] WRITE RESPONSE FAIL: EXPECTED=%b GOT=%b",
                                  exp_bresp, bresp);
                     end
@@ -138,7 +138,7 @@ module axi4_lite_scoreboard #(
             if (rvalid && rready) begin
                 checks = checks + 1;
                 if (!rd_pending) begin
-                    errors = errors + 1;
+                    errors = errors + 1; $display("[CHK_FAIL] SB at time %0t", $time);
                     $display("[SCOREBOARD] ERROR: R handshake with no read pending");
                 end
                 else begin
@@ -146,7 +146,7 @@ module axi4_lite_scoreboard #(
                         $display("[SCOREBOARD] READ PASS: ADDR=%h DATA=%h RRESP=%b",
                                  rd_addr, rdata, rresp);
                     else begin
-                        errors = errors + 1;
+                        errors = errors + 1; $display("[CHK_FAIL] SB at time %0t", $time);
                         $display("[SCOREBOARD] READ FAIL: ADDR=%h EXP_DATA=%h EXP_RRESP=%b GOT_DATA=%h GOT_RRESP=%b",
                                  rd_addr, exp_rdata, exp_rresp, rdata, rresp);
                     end

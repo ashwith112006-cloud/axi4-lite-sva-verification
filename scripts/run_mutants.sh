@@ -1,5 +1,6 @@
 #!/bin/bash
 cd "$(dirname "$0")/.." || exit 1
+: "${MUT_ARGS:=+verilator+error+limit+1000}"
 MAN=sim/results/mutant_manifest.tsv
 OUT=sim/results/op_mutants.tsv
 SRCS="tb/master/axi4_lite_master.sv tb/monitor/axi4_lite_monitor.sv tb/scoreboard/axi4_lite_scoreboard.sv tb/coverage/axi4_lite_coverage.sv tb/assertions/axi4_lite_sva.sv tb/tb_top.sv"
