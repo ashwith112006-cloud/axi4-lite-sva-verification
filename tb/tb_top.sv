@@ -512,6 +512,23 @@ module tb_top;
         end
         dut.ready_delay = 0;
 
+ // --- READY-delay sweep: ready_delay 1..3, write then read at each setting
+        begin : rdy_sweep
+            integer ri;
+            reg rdy_ok;
+            rdy_ok = 1'b1;
+            for (ri = 1; ri <= 3; ri = ri + 1) begin
+                dut.ready_delay = ri;
+                master.write(32'h0000_0008, 32'hC0DE_0000 + ri, 4'b1111);
+                if (master.last_bresp !== 2'b00) rdy_ok = 1'b0;
+                master.read (32'h0000_0008, read_data);
+                if (master.last_rresp !== 2'b00) rdy_ok = 1'b0;
+                if (read_data !== (32'hC0DE_0000 + ri)) rdy_ok = 1'b0;
+            end
+            dut.ready_delay = 0;
+            `CHK(1'b1, rdy_ok, "READY DELAY SWEEP 1..3")
+        end
+
  // --- unaligned addresses are invalid (SLVERR, no effect)
         master.write(32'h0000_0001, 32'hBAD0_BAD0, 4'b1111);
         `CHK(2'b10, master.last_bresp, "UNALIGNED WRITE 0x1 BRESP=SLVERR")
