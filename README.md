@@ -20,6 +20,16 @@ seeded random (custom xorshift PRNG) traffic. Academic pre-silicon project, not 
 Full results: `sim/results/`
 
 ## How to run
+bash scripts/build.sh                    # Icarus, no SVA
+    bash scripts/vbuild.sh                   # Verilator with 24 SVA rules
+    bash scripts/regress.sh                  # clean runs, hand-crafted mutants, faults
+    bash scripts/random.sh                   # 10 seeds x 100 random transactions
+    python3 scripts/gen_mutants.py --seed 1  # create operator mutants in /tmp/mutants
+    bash scripts/run_mutants.sh              # run operator mutants
+    bash scripts/faults.sh                   # 8 master-side faults
+    bash scripts/cov.sh                      # slave line/branch/toggle coverage
+    python3 scripts/rule_table.py            # which rule caught which mutant/fault
+
 
 ## Layout
 - rtl/axi4_lite_slave.sv   slave (sim-only ready_delay knob, default 0)
