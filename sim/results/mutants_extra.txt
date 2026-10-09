@@ -1,0 +1,18 @@
+=== MUTANT: BRESP_UNSTABLE ===
+SVA rules that fired:
+        9 [SVA_FAIL] A09_BRESP_STABLE
+First SVA failure: [SVA_FAIL] A09_BRESP_STABLE at time 1145000
+  [TEST] EXTRA TESTS: 25 passed, 0 failed
+  SCOREBOARD RESULT: FAIL
+=== MUTANT: RRESP_UNSTABLE ===
+SVA rules that fired:
+        3 [SVA_FAIL] A12_RRESP_STABLE
+First SVA failure: [SVA_FAIL] A12_RRESP_STABLE at time 1195000
+  [TEST] EXTRA TESTS: 25 passed, 0 failed
+  SCOREBOARD RESULT: FAIL
+=== MUTANT: WREADY_STUCK0 ===
+SVA rules that fired:
+        1 [SVA_FAIL] A21_WREADY_TIMEOUT
+First SVA failure: [SVA_FAIL] A21_WREADY_TIMEOUT at time 405000
+  [TB] WATCHDOG TIMEOUT: simulation did not finish
+  SCOREBOARD RESULT: FAIL

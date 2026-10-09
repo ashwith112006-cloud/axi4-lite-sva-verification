@@ -23,6 +23,12 @@ case "$M" in
     sed -i "s/if (wstrb_reg\[[0-3]\])/if (1'b1)/" "$D/slave.sv" ;;
   ADDR_ALIAS)
  sed -i "s/case ((\([A-Za-z_]*\)\[31:4\] == 28'd0 && \1\[1:0\] == 2'b00) ? \1\[5:2\] : 4'hF)/case (\1[5:2])/" "$D/slave.sv" ;;
+BRESP_UNSTABLE)
+    sed -i "s/if (s_axi_bvalid && s_axi_bready) begin/if (s_axi_bvalid \&\& !s_axi_bready) s_axi_bresp <= s_axi_bresp ^ 2'b10;\n            if (s_axi_bvalid \&\& s_axi_bready) begin/" "$D/slave.sv" ;;
+  RRESP_UNSTABLE)
+    sed -i "s/if (s_axi_rvalid && s_axi_rready) begin/if (s_axi_rvalid \&\& !s_axi_rready) s_axi_rresp <= s_axi_rresp ^ 2'b10;\n            if (s_axi_rvalid \&\& s_axi_rready) begin/" "$D/slave.sv" ;;
+  WREADY_STUCK0)
+    sed -i "s/assign s_axi_wready = .*;/assign s_axi_wready = 1'b0;/" "$D/slave.sv" ;;
   *) echo "unknown mutant: $M"; exit 1 ;;
 esac
 if cmp -s rtl/axi4_lite_slave.sv "$D/slave.sv"; then

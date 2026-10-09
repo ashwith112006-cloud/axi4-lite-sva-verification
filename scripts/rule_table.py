@@ -8,7 +8,7 @@ for ln in open(R/"op_mutants.tsv").read().splitlines()[1:]:
     if len(c) >= 7 and c[6] not in ("-", ""):
         for r in c[6].split("+"): op[r].append(c[0])
 cur = None
-for ln in open(R/"mutants_random_all.txt"):
+for ln in open(R/"mutants_random_all.txt").readlines() + open(R/"mutants_extra.txt").readlines():
     m = re.match(r"=== MUTANT: (\w+)", ln)
     if m: cur = m.group(1); continue
     for r in re.findall(r"\[SVA_FAIL\] (A\d+_\w+)", ln):
