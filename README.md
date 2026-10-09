@@ -20,7 +20,8 @@ seeded random (custom xorshift PRNG) traffic. Academic pre-silicon project, not 
 Full results: `sim/results/`
 
 ## How to run
-bash scripts/build.sh                    # Icarus, no SVA
+
+    bash scripts/build.sh                    # Icarus, no SVA
     bash scripts/vbuild.sh                   # Verilator with 24 SVA rules
     bash scripts/regress.sh                  # clean runs, hand-crafted mutants, faults
     bash scripts/random.sh                   # 10 seeds x 100 random transactions
