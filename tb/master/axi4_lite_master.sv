@@ -194,4 +194,19 @@ if (!seen && fault_mode == 6) begin
                 $display("[MASTER] READ RESPONSE ERROR ADDR=%h RRESP=%b", addr, resp_seen);
         end
     endtask
+
+    // fault 8: AWVALID driven HIGH during reset and the first cycle after it
+    initial begin
+        integer f8;
+        if (!$value$plusargs("FAULT=%d", f8)) f8 = 0;
+        if (f8 == 8) begin
+            $display("[FAULT_INJECTED] AWVALID_IN_RESET at time %0t", $time);
+            awvalid = 1'b1;
+            @(posedge aresetn);
+            @(posedge aclk);
+            @(negedge aclk);
+            awvalid = 1'b0;
+
+        end
+    end
 endmodule

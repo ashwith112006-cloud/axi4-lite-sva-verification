@@ -115,6 +115,11 @@ module axi4_lite_sva #(
         (aresetn && rvalid) |-> (ar_cnt > r_cnt))
         else `SVA_FAIL("A17_NO_R_WITHOUT_READ")
 
+    // ---------- master VALIDs low in/after reset (Arm AXI4_ERRM_*VALID_RESET) ----------
+    A24_RESET_REQ_LOW: assert property (@(posedge aclk)
+        (!aresetn) |=> (!awvalid && !wvalid && !arvalid))
+        else `SVA_FAIL("A24_RESET_REQ_LOW")
+
     // ---------- bounded response (counter based; reports once) ----------
     always @(posedge aclk) begin
         if (aresetn) begin

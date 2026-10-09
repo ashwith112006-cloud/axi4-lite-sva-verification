@@ -5,3 +5,4 @@ WDATA_CHANGE: injected=1610000 rule=A04_WDATA_STABLE fail_t=1615000 latency_ns=5
 WSTRB_CHANGE: injected=1610000 rule=A05_WSTRB_STABLE fail_t=1615000 latency_ns=5 scoreboard=PASS
 ARVALID_DROP: injected=1560000 rule=A06_ARVALID_HOLD fail_t=1565000 latency_ns=5 scoreboard=PASS
 ARADDR_CHANGE: injected=1560000 rule=A07_ARADDR_STABLE fail_t=1565000 latency_ns=5 scoreboard=PASS
+AWVALID_IN_RESET: injected=0 rule=A24_RESET_REQ_LOW fail_t=15000 latency_ns=15 scoreboard=FAIL
