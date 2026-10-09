@@ -16,3 +16,21 @@ SANITY: B  stall cycles = 9
 SANITY: R  stall cycles = 3
 SANITY: B handshakes    = 52
 SANITY: R handshakes    = 53
+== RTL MUTANTS ==
+MISSING_B        SVA_caught=YES scoreboard=FAIL tests_failed=n/a
+MISSING_R        SVA_caught=YES scoreboard=FAIL tests_failed=n/a
+BVALID_DROP      SVA_caught=YES scoreboard=FAIL tests_failed=n/a
+RDATA_UNSTABLE   SVA_caught=YES scoreboard=FAIL tests_failed=1
+ILLEGAL_BRESP    SVA_caught=YES scoreboard=FAIL tests_failed=5
+ILLEGAL_RRESP    SVA_caught=YES scoreboard=FAIL tests_failed=2
+STRB_IGNORED     SVA_caught=NO  scoreboard=FAIL tests_failed=9
+ADDR_ALIAS       SVA_caught=NO  scoreboard=FAIL tests_failed=12
+== MASTER-SIDE FAULTS ==
+AWVALID_DROP: injected=1560000 rule=A01_AWVALID_HOLD fail_t=1565000 latency_ns=5 scoreboard=PASS
+AWADDR_CHANGE: injected=1560000 rule=A02_AWADDR_STABLE fail_t=1565000 latency_ns=5 scoreboard=PASS
+WVALID_DROP: injected=1610000 rule=A03_WVALID_HOLD fail_t=1615000 latency_ns=5 scoreboard=PASS
+WDATA_CHANGE: injected=1610000 rule=A04_WDATA_STABLE fail_t=1615000 latency_ns=5 scoreboard=PASS
+WSTRB_CHANGE: injected=1610000 rule=A05_WSTRB_STABLE fail_t=1615000 latency_ns=5 scoreboard=PASS
+ARVALID_DROP: injected=1560000 rule=A06_ARVALID_HOLD fail_t=1565000 latency_ns=5 scoreboard=PASS
+ARADDR_CHANGE: injected=1560000 rule=A07_ARADDR_STABLE fail_t=1565000 latency_ns=5 scoreboard=PASS
+AWVALID_IN_RESET: injected=0 rule=A24_RESET_REQ_LOW fail_t=15000 latency_ns=15 scoreboard=FAIL

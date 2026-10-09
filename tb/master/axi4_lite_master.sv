@@ -196,7 +196,7 @@ if (!seen && fault_mode == 6) begin
     endtask
 
     // fault 8: AWVALID driven HIGH during reset and the first cycle after it
-    initial begin
+    initial begin : fault8_blk
         integer f8;
         if (!$value$plusargs("FAULT=%d", f8)) f8 = 0;
         if (f8 == 8) begin
