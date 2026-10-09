@@ -1,0 +1,19 @@
+id	reason
+m019	write decode: out-of-range index 0xF->0xE, both select the default (SLVERR) branch
+m035	read decode: out-of-range index 0xF->0xE, both select the default (SLVERR) branch
+m023	s_axi_bresp <= RESP_OKAY replaced by '0; RESP_OKAY is 2'b00 (same value)
+m031	s_axi_rresp <= RESP_OKAY replaced by '0 (same value)
+m059	s_axi_rresp <= RESP_OKAY replaced by '0 (same value)
+m076	s_axi_bresp <= RESP_OKAY replaced by '0 (same value)
+m107	s_axi_rresp <= RESP_OKAY replaced by '0 (same value)
+m133	s_axi_bresp <= RESP_OKAY replaced by '0 (same value)
+m139	s_axi_rresp <= RESP_OKAY replaced by '0 (same value)
+m143	reset value of s_axi_rresp: RESP_OKAY replaced by '0 (same value)
+m149	s_axi_bresp <= RESP_OKAY replaced by '0 (same value)
+m151	reset value of s_axi_bresp: RESP_OKAY replaced by '0 (same value)
+m134	reset value of wstrb_reg; always written at the W handshake before use
+m152	reset value of awaddr_reg; always written at the AW handshake before use
+m159	reset value of wdata_reg; always written at the W handshake before use
+m072	reset value of s_axi_rdata; rdata is always set in the cycle RVALID rises, so the changed value is only visible while RVALID is low (don't-care)
+m150	reset value of s_axi_rresp; set in the cycle RVALID rises, visible only while RVALID is low (don't-care)
+m161	reset value of s_axi_bresp; set in the cycle BVALID rises, visible only while BVALID is low (don't-care)

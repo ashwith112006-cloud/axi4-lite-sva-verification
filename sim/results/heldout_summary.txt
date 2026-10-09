@@ -1,0 +1,38 @@
+
+== Original 30 (m001-m030): 30 mutants, 2 equivalent, 28 non-equivalent ==
+environment                            detected      with SVA   SVA only
+Original env (19 rules, 21 checks)      25/28 (89.3%)    4 (14.3%)    0
+Final env, rules A01-A19 only           26/28 (92.9%)    4 (14.3%)    0
+Final env (24 rules, 25 checks)         28/28 (100.0%)    9 (32.1%)    2
+final-env non-equivalent survivors: []
+
+== Held-out 141 (m031-m171): 141 mutants, 16 equivalent, 125 non-equivalent ==
+environment                            detected      with SVA   SVA only
+Original env (19 rules, 21 checks)     116/125 (92.8%)   38 (30.4%)    0
+Final env, rules A01-A19 only          117/125 (93.6%)   38 (30.4%)    0
+Final env (24 rules, 25 checks)        121/125 (96.8%)   53 (42.4%)    4
+final-env non-equivalent survivors: ['m105', 'm114', 'm158', 'm166']
+
+== All 171: 171 mutants, 18 equivalent, 153 non-equivalent ==
+environment                            detected      with SVA   SVA only
+Original env (19 rules, 21 checks)     141/153 (92.2%)   42 (27.5%)    0
+Final env, rules A01-A19 only          143/153 (93.5%)   42 (27.5%)    0
+Final env (24 rules, 25 checks)        149/153 (97.4%)   62 (40.5%)    6
+final-env non-equivalent survivors: ['m105', 'm114', 'm158', 'm166']
+
+held-out rule firings (final env): {'A11_RDATA_STABLE': 1, 'A13_BRESP_LEGAL': 5, 'A14_RRESP_LEGAL': 5, 'A15_RESET_RESP_LOW': 6, 'A16_NO_B_WITHOUT_WRITE': 12, 'A17_NO_R_WITHOUT_READ': 4, 'A18_B_TIMEOUT': 9, 'A19_R_TIMEOUT': 3, 'A20_AWREADY_TIMEOUT': 11, 'A21_WREADY_TIMEOUT': 9, 'A22_ARREADY_TIMEOUT': 6, 'A23_EARLY_READY': 5}
+
+mutants with both an assertion time and a checker failure time (final env):
+  m001 first SVA 1355 ns, first checker 1270 ns, gap -9 cycles, rules A23_EARLY_READY
+  m061 first SVA 1355 ns, first checker 1270 ns, gap -9 cycles, rules A23_EARLY_READY
+  m077 first SVA 285 ns, first checker 285 ns, gap 0 cycles, rules A14_RRESP_LEGAL
+  m099 first SVA 1285 ns, first checker 115 ns, gap -117 cycles, rules A16_NO_B_WITHOUT_WRITE+A21_WREADY_TIMEOUT
+  m102 first SVA 945 ns, first checker 945 ns, gap 0 cycles, rules A13_BRESP_LEGAL
+  m124 first SVA 125 ns, first checker 125 ns, gap 0 cycles, rules A14_RRESP_LEGAL
+  m126 first SVA 365 ns, first checker 365 ns, gap 0 cycles, rules A14_RRESP_LEGAL
+  m140 first SVA 1085 ns, first checker 1085 ns, gap 0 cycles, rules A14_RRESP_LEGAL
+  m142 first SVA 95 ns, first checker 95 ns, gap 0 cycles, rules A13_BRESP_LEGAL
+  m148 first SVA 175 ns, first checker 175 ns, gap 0 cycles, rules A13_BRESP_LEGAL
+  m162 first SVA 255 ns, first checker 255 ns, gap 0 cycles, rules A13_BRESP_LEGAL
+  m165 first SVA 335 ns, first checker 335 ns, gap 0 cycles, rules A13_BRESP_LEGAL
+  m167 first SVA 205 ns, first checker 205 ns, gap 0 cycles, rules A14_RRESP_LEGAL

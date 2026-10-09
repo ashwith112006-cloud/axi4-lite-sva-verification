@@ -1,0 +1,172 @@
+id	line	operator	original	mutated
+m001	87	AND_TO_OR	assign s_axi_awready = !aw_received && !s_axi_bvalid && (aw_wait >= ready_delay);	assign s_axi_awready = !aw_received && !s_axi_bvalid || (aw_wait >= ready_delay);
+m002	252	BIT_FLIP	aw_received <= 1'b0;	aw_received <= 1'b1;
+m003	279	CONST_MINUS1	4'd1: begin	4'd0: begin
+m004	168	CONST_PLUS1	4'd0: begin	4'd1: begin
+m005	166	EQ_TO_NEQ	case ((awaddr_reg[31:4] == 28'd0 && awaddr_reg[1:0] == 2'b00) ? awaddr_reg[5:2] : 4'hF)	case ((awaddr_reg[31:4] != 28'd0 && awaddr_reg[1:0] == 2'b00) ? awaddr_reg[5:2] : 4'hF)
+m006	206	IF_NEGATE	if (wstrb_reg[0])	if (!(wstrb_reg[0]))
+m007	234	STUCK0	reg3[31:24] <= wdata_reg[31:24];	reg3[31:24] <= '0;
+m008	153	STUCK1	wstrb_reg <= s_axi_wstrb;	wstrb_reg <= '1;
+m009	79	AND_TO_OR	ar_wait <= (s_axi_arvalid && !s_axi_arready) ? ar_wait + 1 : 0;	ar_wait <= (s_axi_arvalid || !s_axi_arready) ? ar_wait + 1 : 0;
+m010	262	BIT_FLIP	s_axi_bvalid <= 1'b0;	s_axi_bvalid <= 1'b1;
+m011	204	CONST_MINUS1	4'd2: begin	4'd1: begin
+m012	166	CONST_PLUS1	case ((awaddr_reg[31:4] == 28'd0 && awaddr_reg[1:0] == 2'b00) ? awaddr_reg[5:2] : 4'hF)	case ((awaddr_reg[31:4] == 28'd1 && awaddr_reg[1:0] == 2'b00) ? awaddr_reg[5:2] : 4'hF)
+m013	272	EQ_TO_NEQ	case ((s_axi_araddr[31:4] == 28'd0 && s_axi_araddr[1:0] == 2'b00) ? s_axi_araddr[5:2] : 4'hF)	case ((s_axi_araddr[31:4] != 28'd0 && s_axi_araddr[1:0] == 2'b00) ? s_axi_araddr[5:2] : 4'hF)
+m014	224	IF_NEGATE	if (wstrb_reg[0])	if (!(wstrb_reg[0]))
+m015	195	STUCK0	reg1[23:16] <= wdata_reg[23:16];	reg1[23:16] <= '0;
+m016	152	STUCK1	wdata_reg <= s_axi_wdata;	wdata_reg <= '1;
+m017	309	AND_TO_OR	if (s_axi_rvalid && s_axi_rready) begin	if (s_axi_rvalid || s_axi_rready) begin
+m018	120	BIT_FLIP	aw_received <= 1'b0;	aw_received <= 1'b1;
+m019	166	CONST_MINUS1	case ((awaddr_reg[31:4] == 28'd0 && awaddr_reg[1:0] == 2'b00) ? awaddr_reg[5:2] : 4'hF)	case ((awaddr_reg[31:4] == 28'd0 && awaddr_reg[1:0] == 2'b00) ? awaddr_reg[5:2] : 4'he)
+m020	279	CONST_PLUS1	4'd1: begin	4'd2: begin
+m021	272	EQ_TO_NEQ	case ((s_axi_araddr[31:4] == 28'd0 && s_axi_araddr[1:0] == 2'b00) ? s_axi_araddr[5:2] : 4'hF)	case ((s_axi_araddr[31:4] == 28'd0 && s_axi_araddr[1:0] != 2'b00) ? s_axi_araddr[5:2] : 4'hF)
+m022	170	IF_NEGATE	if (wstrb_reg[0])	if (!(wstrb_reg[0]))
+m023	182	STUCK0	s_axi_bresp <= RESP_OKAY;	s_axi_bresp <= '0;
+m024	231	STUCK1	reg3[23:16] <= wdata_reg[23:16];	reg3[23:16] <= '1;
+m025	78	AND_TO_OR	w_wait  <= (s_axi_wvalid  && !s_axi_wready ) ? w_wait  + 1 : 0;	w_wait  <= (s_axi_wvalid  || !s_axi_wready ) ? w_wait  + 1 : 0;
+m026	128	BIT_FLIP	s_axi_rvalid <= 1'b0;	s_axi_rvalid <= 1'b1;
+m027	186	CONST_MINUS1	4'd1: begin	4'd0: begin
+m028	284	CONST_PLUS1	4'd2: begin	4'd3: begin
+m029	166	EQ_TO_NEQ	case ((awaddr_reg[31:4] == 28'd0 && awaddr_reg[1:0] == 2'b00) ? awaddr_reg[5:2] : 4'hF)	case ((awaddr_reg[31:4] == 28'd0 && awaddr_reg[1:0] != 2'b00) ? awaddr_reg[5:2] : 4'hF)
+m030	270	IF_NEGATE	if (s_axi_arvalid && s_axi_arready) begin	if (!(s_axi_arvalid && s_axi_arready)) begin
+m031	286	STUCK0	s_axi_rresp <= RESP_OKAY;	s_axi_rresp <= '0;
+m032	210	STUCK1	reg2[15:8] <= wdata_reg[15:8];	reg2[15:8] <= '1;
+m033	99	AND_TO_OR	assign s_axi_arready = !s_axi_rvalid && (ar_wait >= ready_delay);	assign s_axi_arready = !s_axi_rvalid || (ar_wait >= ready_delay);
+m034	124	BIT_FLIP	s_axi_bvalid <= 1'b0;	s_axi_bvalid <= 1'b1;
+m035	272	CONST_MINUS1	case ((s_axi_araddr[31:4] == 28'd0 && s_axi_araddr[1:0] == 2'b00) ? s_axi_araddr[5:2] : 4'hF)	case ((s_axi_araddr[31:4] == 28'd0 && s_axi_araddr[1:0] == 2'b00) ? s_axi_araddr[5:2] : 4'he)
+m036	186	CONST_PLUS1	4'd1: begin	4'd2: begin
+m037	227	IF_NEGATE	if (wstrb_reg[1])	if (!(wstrb_reg[1]))
+m038	142	STUCK0	aw_received <= 1'b1;	aw_received <= '0;
+m039	213	STUCK1	reg2[23:16] <= wdata_reg[23:16];	reg2[23:16] <= '1;
+m040	166	AND_TO_OR	case ((awaddr_reg[31:4] == 28'd0 && awaddr_reg[1:0] == 2'b00) ? awaddr_reg[5:2] : 4'hF)	case ((awaddr_reg[31:4] == 28'd0 || awaddr_reg[1:0] == 2'b00) ? awaddr_reg[5:2] : 4'hF)
+m041	142	BIT_FLIP	aw_received <= 1'b1;	aw_received <= 1'b0;
+m042	222	CONST_MINUS1	4'd3: begin	4'd2: begin
+m043	289	CONST_PLUS1	4'd3: begin	4'd4: begin
+m044	176	IF_NEGATE	if (wstrb_reg[2])	if (!(wstrb_reg[2]))
+m045	207	STUCK0	reg2[7:0] <= wdata_reg[7:0];	reg2[7:0] <= '0;
+m046	189	STUCK1	reg1[7:0] <= wdata_reg[7:0];	reg1[7:0] <= '1;
+m047	164	AND_TO_OR	if (aw_received && w_received && !s_axi_bvalid) begin	if (aw_received && w_received || !s_axi_bvalid) begin
+m048	249	BIT_FLIP	s_axi_bvalid <= 1'b1;	s_axi_bvalid <= 1'b0;
+m049	289	CONST_MINUS1	4'd3: begin	4'd2: begin
+m050	272	CONST_PLUS1	case ((s_axi_araddr[31:4] == 28'd0 && s_axi_araddr[1:0] == 2'b00) ? s_axi_araddr[5:2] : 4'hF)	case ((s_axi_araddr[31:4] == 28'd1 && s_axi_araddr[1:0] == 2'b00) ? s_axi_araddr[5:2] : 4'hF)
+m051	209	IF_NEGATE	if (wstrb_reg[1])	if (!(wstrb_reg[1]))
+m052	78	STUCK0	w_wait  <= (s_axi_wvalid  && !s_axi_wready ) ? w_wait  + 1 : 0;	w_wait  <= '0;
+m053	295	STUCK1	s_axi_rdata <= '0;	s_axi_rdata <= '1;
+m054	91	AND_TO_OR	assign s_axi_wready = !w_received && !s_axi_bvalid && (w_wait >= ready_delay);	assign s_axi_wready = !w_received && !s_axi_bvalid || (w_wait >= ready_delay);
+m055	121	BIT_FLIP	w_received  <= 1'b0;	w_received  <= 1'b1;
+m056	284	CONST_MINUS1	4'd2: begin	4'd1: begin
+m057	274	CONST_PLUS1	4'd0: begin	4'd1: begin
+m058	139	IF_NEGATE	if (s_axi_awvalid && s_axi_awready) begin	if (!(s_axi_awvalid && s_axi_awready)) begin
+m059	281	STUCK0	s_axi_rresp <= RESP_OKAY;	s_axi_rresp <= '0;
+m060	79	STUCK1	ar_wait <= (s_axi_arvalid && !s_axi_arready) ? ar_wait + 1 : 0;	ar_wait <= '1;
+m061	87	AND_TO_OR	assign s_axi_awready = !aw_received && !s_axi_bvalid && (aw_wait >= ready_delay);	assign s_axi_awready = !aw_received || !s_axi_bvalid && (aw_wait >= ready_delay);
+m062	302	BIT_FLIP	s_axi_rvalid <= 1'b1;	s_axi_rvalid <= 1'b0;
+m063	204	CONST_PLUS1	4'd2: begin	4'd3: begin
+m064	179	IF_NEGATE	if (wstrb_reg[3])	if (!(wstrb_reg[3]))
+m065	280	STUCK0	s_axi_rdata <= reg1;	s_axi_rdata <= '0;
+m066	207	STUCK1	reg2[7:0] <= wdata_reg[7:0];	reg2[7:0] <= '1;
+m067	260	AND_TO_OR	if (s_axi_bvalid && s_axi_bready) begin	if (s_axi_bvalid || s_axi_bready) begin
+m068	311	BIT_FLIP	s_axi_rvalid <= 1'b0;	s_axi_rvalid <= 1'b1;
+m069	222	CONST_PLUS1	4'd3: begin	4'd4: begin
+m070	233	IF_NEGATE	if (wstrb_reg[3])	if (!(wstrb_reg[3]))
+m071	77	STUCK0	aw_wait <= (s_axi_awvalid && !s_axi_awready) ? aw_wait + 1 : 0;	aw_wait <= '0;
+m072	129	STUCK1	s_axi_rdata  <= '0;	s_axi_rdata  <= '1;
+m073	139	AND_TO_OR	if (s_axi_awvalid && s_axi_awready) begin	if (s_axi_awvalid || s_axi_awready) begin
+m074	154	BIT_FLIP	w_received <= 1'b1;	w_received <= 1'b0;
+m075	173	IF_NEGATE	if (wstrb_reg[1])	if (!(wstrb_reg[1]))
+m076	218	STUCK0	s_axi_bresp <= RESP_OKAY;	s_axi_bresp <= '0;
+m077	286	STUCK1	s_axi_rresp <= RESP_OKAY;	s_axi_rresp <= '1;
+m078	77	AND_TO_OR	aw_wait <= (s_axi_awvalid && !s_axi_awready) ? aw_wait + 1 : 0;	aw_wait <= (s_axi_awvalid || !s_axi_awready) ? aw_wait + 1 : 0;
+m079	253	BIT_FLIP	w_received  <= 1'b0;	w_received  <= 1'b1;
+m080	191	IF_NEGATE	if (wstrb_reg[1])	if (!(wstrb_reg[1]))
+m081	210	STUCK0	reg2[15:8] <= wdata_reg[15:8];	reg2[15:8] <= '0;
+m082	192	STUCK1	reg1[15:8] <= wdata_reg[15:8];	reg1[15:8] <= '1;
+m083	150	AND_TO_OR	if (s_axi_wvalid && s_axi_wready) begin	if (s_axi_wvalid || s_axi_wready) begin
+m084	188	IF_NEGATE	if (wstrb_reg[0])	if (!(wstrb_reg[0]))
+m085	290	STUCK0	s_axi_rdata <= reg3;	s_axi_rdata <= '0;
+m086	253	STUCK1	w_received  <= 1'b0;	w_received  <= '1;
+m087	270	AND_TO_OR	if (s_axi_arvalid && s_axi_arready) begin	if (s_axi_arvalid || s_axi_arready) begin
+m088	164	IF_NEGATE	if (aw_received && w_received && !s_axi_bvalid) begin	if (!(aw_received && w_received && !s_axi_bvalid)) begin
+m089	180	STUCK0	reg0[31:24] <= wdata_reg[31:24];	reg0[31:24] <= '0;
+m090	121	STUCK1	w_received  <= 1'b0;	w_received  <= '1;
+m091	272	AND_TO_OR	case ((s_axi_araddr[31:4] == 28'd0 && s_axi_araddr[1:0] == 2'b00) ? s_axi_araddr[5:2] : 4'hF)	case ((s_axi_araddr[31:4] == 28'd0 || s_axi_araddr[1:0] == 2'b00) ? s_axi_araddr[5:2] : 4'hF)
+m092	194	IF_NEGATE	if (wstrb_reg[2])	if (!(wstrb_reg[2]))
+m093	216	STUCK0	reg2[31:24] <= wdata_reg[31:24];	reg2[31:24] <= '0;
+m094	180	STUCK1	reg0[31:24] <= wdata_reg[31:24];	reg0[31:24] <= '1;
+m095	91	AND_TO_OR	assign s_axi_wready = !w_received && !s_axi_bvalid && (w_wait >= ready_delay);	assign s_axi_wready = !w_received || !s_axi_bvalid && (w_wait >= ready_delay);
+m096	230	IF_NEGATE	if (wstrb_reg[2])	if (!(wstrb_reg[2]))
+m097	275	STUCK0	s_axi_rdata <= reg0;	s_axi_rdata <= '0;
+m098	225	STUCK1	reg3[7:0] <= wdata_reg[7:0];	reg3[7:0] <= '1;
+m099	164	AND_TO_OR	if (aw_received && w_received && !s_axi_bvalid) begin	if (aw_received || w_received && !s_axi_bvalid) begin
+m100	197	IF_NEGATE	if (wstrb_reg[3])	if (!(wstrb_reg[3]))
+m101	192	STUCK0	reg1[15:8] <= wdata_reg[15:8];	reg1[15:8] <= '0;
+m102	242	STUCK1	s_axi_bresp <= RESP_SLVERR;	s_axi_bresp <= '1;
+m103	150	IF_NEGATE	if (s_axi_wvalid && s_axi_wready) begin	if (!(s_axi_wvalid && s_axi_wready)) begin
+m104	152	STUCK0	wdata_reg <= s_axi_wdata;	wdata_reg <= '0;
+m105	112	STUCK1	reg2 <= '0;	reg2 <= '1;
+m106	212	IF_NEGATE	if (wstrb_reg[2])	if (!(wstrb_reg[2]))
+m107	291	STUCK0	s_axi_rresp <= RESP_OKAY;	s_axi_rresp <= '0;
+m108	198	STUCK1	reg1[31:24] <= wdata_reg[31:24];	reg1[31:24] <= '1;
+m109	309	IF_NEGATE	if (s_axi_rvalid && s_axi_rready) begin	if (!(s_axi_rvalid && s_axi_rready)) begin
+m110	189	STUCK0	reg1[7:0] <= wdata_reg[7:0];	reg1[7:0] <= '0;
+m111	290	STUCK1	s_axi_rdata <= reg3;	s_axi_rdata <= '1;
+m112	107	IF_NEGATE	if (!aresetn) begin	if (!(!aresetn)) begin
+m113	296	STUCK0	s_axi_rresp <= RESP_SLVERR;	s_axi_rresp <= '0;
+m114	113	STUCK1	reg3 <= '0;	reg3 <= '1;
+m115	215	IF_NEGATE	if (wstrb_reg[3])	if (!(wstrb_reg[3]))
+m116	249	STUCK0	s_axi_bvalid <= 1'b1;	s_axi_bvalid <= '0;
+m117	120	STUCK1	aw_received <= 1'b0;	aw_received <= '1;
+m118	260	IF_NEGATE	if (s_axi_bvalid && s_axi_bready) begin	if (!(s_axi_bvalid && s_axi_bready)) begin
+m119	174	STUCK0	reg0[15:8] <= wdata_reg[15:8];	reg0[15:8] <= '0;
+m120	275	STUCK1	s_axi_rdata <= reg0;	s_axi_rdata <= '1;
+m121	285	STUCK0	s_axi_rdata <= reg2;	s_axi_rdata <= '0;
+m122	234	STUCK1	reg3[31:24] <= wdata_reg[31:24];	reg3[31:24] <= '1;
+m123	198	STUCK0	reg1[31:24] <= wdata_reg[31:24];	reg1[31:24] <= '0;
+m124	276	STUCK1	s_axi_rresp <= RESP_OKAY;	s_axi_rresp <= '1;
+m125	231	STUCK0	reg3[23:16] <= wdata_reg[23:16];	reg3[23:16] <= '0;
+m126	291	STUCK1	s_axi_rresp <= RESP_OKAY;	s_axi_rresp <= '1;
+m127	154	STUCK0	w_received <= 1'b1;	w_received <= '0;
+m128	77	STUCK1	aw_wait <= (s_axi_awvalid && !s_axi_awready) ? aw_wait + 1 : 0;	aw_wait <= '1;
+m129	225	STUCK0	reg3[7:0] <= wdata_reg[7:0];	reg3[7:0] <= '0;
+m130	280	STUCK1	s_axi_rdata <= reg1;	s_axi_rdata <= '1;
+m131	228	STUCK0	reg3[15:8] <= wdata_reg[15:8];	reg3[15:8] <= '0;
+m132	78	STUCK1	w_wait  <= (s_axi_wvalid  && !s_axi_wready ) ? w_wait  + 1 : 0;	w_wait  <= '1;
+m133	236	STUCK0	s_axi_bresp <= RESP_OKAY;	s_axi_bresp <= '0;
+m134	118	STUCK1	wstrb_reg  <= '0;	wstrb_reg  <= '1;
+m135	153	STUCK0	wstrb_reg <= s_axi_wstrb;	wstrb_reg <= '0;
+m136	177	STUCK1	reg0[23:16] <= wdata_reg[23:16];	reg0[23:16] <= '1;
+m137	171	STUCK0	reg0[7:0] <= wdata_reg[7:0];	reg0[7:0] <= '0;
+m138	311	STUCK1	s_axi_rvalid <= 1'b0;	s_axi_rvalid <= '1;
+m139	276	STUCK0	s_axi_rresp <= RESP_OKAY;	s_axi_rresp <= '0;
+m140	296	STUCK1	s_axi_rresp <= RESP_SLVERR;	s_axi_rresp <= '1;
+m141	79	STUCK0	ar_wait <= (s_axi_arvalid && !s_axi_arready) ? ar_wait + 1 : 0;	ar_wait <= '0;
+m142	182	STUCK1	s_axi_bresp <= RESP_OKAY;	s_axi_bresp <= '1;
+m143	130	STUCK0	s_axi_rresp  <= RESP_OKAY;	s_axi_rresp  <= '0;
+m144	124	STUCK1	s_axi_bvalid <= 1'b0;	s_axi_bvalid <= '1;
+m145	302	STUCK0	s_axi_rvalid <= 1'b1;	s_axi_rvalid <= '0;
+m146	285	STUCK1	s_axi_rdata <= reg2;	s_axi_rdata <= '1;
+m147	141	STUCK0	awaddr_reg <= s_axi_awaddr;	awaddr_reg <= '0;
+m148	200	STUCK1	s_axi_bresp <= RESP_OKAY;	s_axi_bresp <= '1;
+m149	200	STUCK0	s_axi_bresp <= RESP_OKAY;	s_axi_bresp <= '0;
+m150	130	STUCK1	s_axi_rresp  <= RESP_OKAY;	s_axi_rresp  <= '1;
+m151	125	STUCK0	s_axi_bresp  <= RESP_OKAY;	s_axi_bresp  <= '0;
+m152	116	STUCK1	awaddr_reg <= '0;	awaddr_reg <= '1;
+m153	242	STUCK0	s_axi_bresp <= RESP_SLVERR;	s_axi_bresp <= '0;
+m154	228	STUCK1	reg3[15:8] <= wdata_reg[15:8];	reg3[15:8] <= '1;
+m155	177	STUCK0	reg0[23:16] <= wdata_reg[23:16];	reg0[23:16] <= '0;
+m156	171	STUCK1	reg0[7:0] <= wdata_reg[7:0];	reg0[7:0] <= '1;
+m157	213	STUCK0	reg2[23:16] <= wdata_reg[23:16];	reg2[23:16] <= '0;
+m158	110	STUCK1	reg0 <= '0;	reg0 <= '1;
+m159	117	STUCK1	wdata_reg  <= '0;	wdata_reg  <= '1;
+m160	128	STUCK1	s_axi_rvalid <= 1'b0;	s_axi_rvalid <= '1;
+m161	125	STUCK1	s_axi_bresp  <= RESP_OKAY;	s_axi_bresp  <= '1;
+m162	218	STUCK1	s_axi_bresp <= RESP_OKAY;	s_axi_bresp <= '1;
+m163	252	STUCK1	aw_received <= 1'b0;	aw_received <= '1;
+m164	174	STUCK1	reg0[15:8] <= wdata_reg[15:8];	reg0[15:8] <= '1;
+m165	236	STUCK1	s_axi_bresp <= RESP_OKAY;	s_axi_bresp <= '1;
+m166	111	STUCK1	reg1 <= '0;	reg1 <= '1;
+m167	281	STUCK1	s_axi_rresp <= RESP_OKAY;	s_axi_rresp <= '1;
+m168	216	STUCK1	reg2[31:24] <= wdata_reg[31:24];	reg2[31:24] <= '1;
+m169	262	STUCK1	s_axi_bvalid <= 1'b0;	s_axi_bvalid <= '1;
+m170	195	STUCK1	reg1[23:16] <= wdata_reg[23:16];	reg1[23:16] <= '1;
+m171	141	STUCK1	awaddr_reg <= s_axi_awaddr;	awaddr_reg <= '1;

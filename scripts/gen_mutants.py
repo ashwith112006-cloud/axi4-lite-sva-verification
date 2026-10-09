@@ -5,6 +5,7 @@ ap.add_argument("--src", default="rtl/axi4_lite_slave.sv")
 ap.add_argument("--max", type=int, default=30)
 ap.add_argument("--seed", type=int, default=1)
 ap.add_argument("--out", default="/tmp/mutants")
+ap.add_argument("--manifest", default="sim/results/mutant_manifest.tsv")
 a = ap.parse_args()
 
 SKIP = re.compile(r'^\s*(//|module\b|endmodule\b|input\b|output\b|inout\b|parameter\b|localparam\b|logic\b|reg\b|wire\b|typedef\b|`)')
@@ -66,7 +67,7 @@ while len(sel) < a.max and any(groups.values()):
         if groups[op] and len(sel) < a.max: sel.append(groups[op].pop())
 
 os.makedirs(a.out, exist_ok=True); os.makedirs("sim/results", exist_ok=True)
-with open("sim/results/mutant_manifest.tsv", "w") as mf:
+with open(a.manifest, "w") as mf:
     mf.write("id\tline\toperator\toriginal\tmutated\n")
     for n, (op, i, o, nw, full) in enumerate(sel, 1):
         mid = "m%03d" % n
