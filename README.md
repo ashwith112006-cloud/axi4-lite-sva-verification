@@ -10,13 +10,13 @@ seeded random (custom xorshift PRNG) traffic. Academic pre-silicon project, not 
 |---|---|
 | Clean directed run (Icarus and Verilator) | 25/25 extra tests, scoreboard PASS, 0 SVA fails, 21/21 defined coverage bins |
 | Seeded random traffic (10 seeds x 100 transactions, xorshift PRNG, random backpressure 0-3 cycles) | 205 checks/seed, 0 errors, 0 SVA fails |
-| Hand-crafted RTL mutants (11) | 11/11 detected; 9 by SVA; STRB_IGNORED and ADDR_ALIAS by scoreboard only |
+| Hand-crafted RTL mutants (11) | 11/11 detected; 9 by SVA; STRB_IGNORED and ADDR_ALIAS by scoreboard and directed tests only |
 | Operator-style RTL mutants (30, seed 1) | 28/28 non-equivalent detected (9 with SVA); 2 equivalent survivors (m019, m023) |
 | All 171 operator mutants, held-out 141 (m031-m171) | 125 non-equivalent: original env (19 rules) 116 detected, 38 with SVA; final env (24 rules) 121 detected, 53 with SVA, 4 by SVA only; 18 equivalent mutants listed in sim/results/equivalent_mutants.tsv |
-| Assertion vs checker detection time | 18 bugs with both times: same clock edge in 12, assertion earlier in 3 (2, 2, 19 cycles), checker earlier in 3 (9, 9, 117 cycles) |
-| Master-side faults (8) | 8/8 caught by the intended rule (A01-A07 at the next clock edge after injection; A24 on the first edge in reset) |
-| Rule usefulness | all 24 rules fired on at least one mutant or fault (sim/results/rule_usefulness.tsv) |
-| Slave code coverage (Verilator) | line 16/16, branch 46/46, toggle 344/346 (2 constant bits) |
+| Assertion vs checker detection time | 18 bugs with both times: same clock edge in 12, assertion earlier in 3 (2, 2, 19 cycles), checker earlier in 3 (8.5, 8.5, 117 cycles); `scripts/paper_tables.py` |
+| Master-side faults (8) | 8/8 caught by the intended rule (A01-A07 at the next clock edge after injection; A24 at 15 ns, the second rising edge) |
+| Rule usefulness | all 24 rules fired on at least one mutant or fault (`scripts/paper_tables.py`; `rule_usefulness.tsv` covers the first 30 operator mutants only) |
+| Slave code coverage (Verilator, directed run + 10 seeds) | line 16/16, branch 46/46, toggle 344/346 (2 constant bits); sim/results/coverage.txt |
 | Unaligned addresses | Return SLVERR |
 
 Full results: `sim/results/`
@@ -30,7 +30,7 @@ Full results: `sim/results/`
     python3 scripts/gen_mutants.py --seed 1  # create operator mutants in /tmp/mutants
     bash scripts/run_mutants.sh              # run operator mutants
     bash scripts/faults.sh                   # 8 master-side faults
-    bash scripts/cov.sh                      # slave line/branch/toggle coverage
+    bash scripts/cov.sh > sim/results/coverage.txt   # slave coverage: kind, points, points never hit
     python3 scripts/rule_table.py            # which rule caught which mutant/fault
 
     # all 171 operator mutants, original (19-rule) vs final (24-rule) environment
@@ -39,6 +39,10 @@ Full results: `sim/results/`
     VL_FAST=1 bash scripts/run_mutant_set.sh . sim/results/mutant_manifest_all.tsv /tmp/mutants_all sim/results/op_mutants_all_final.tsv 8
     VL_FAST=1 bash scripts/run_mutant_set.sh /tmp/env_stage1 sim/results/mutant_manifest_all.tsv /tmp/mutants_all sim/results/op_mutants_all_stage1.tsv 8
     python3 scripts/heldout.py
+
+    # paper numbers not printed above (Table VII, per-rule firings, detection-time gaps)
+    bash scripts/detect_times.sh             # hand-crafted mutants: first assertion vs first checker failure
+    python3 scripts/paper_tables.py
 
 
 ## Layout
